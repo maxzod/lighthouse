@@ -1,20 +1,20 @@
 name: lighthouse
-description: lighthouse will watch your project files changes then restart the app
+description: lighthouse will watch your project files changes and restart the app automaticity
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  path: ^1.8.0
+  path: 1.8.0
   # watch files system
   watcher: 1.0.0
   # to log in the terminal with colors
-  ansicolor:
+  ansicolor: 2.0.1
 
 dev_dependencies:
   # lint
-  pedantic: ^1.9.0
+  pedantic: 1.9.0
 
 executables:
-  lh: main
-  lighthouse: main
+  lh: lighthouse
+  lighthouse: lighthouse
