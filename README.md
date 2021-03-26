@@ -1,6 +1,6 @@
 # **`Lighthouse 🔥`**
 
-# CLI package to help you but restarting app automatically when a file changes in the project directory
+# CLI package to help you build dart apps by restarting the app automatically when a file changes in the project directory
 
 # installation
 
