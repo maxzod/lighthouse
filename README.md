@@ -2,6 +2,8 @@
 
 # CLI package to help you build dart apps by restarting the app automatically when a file changes in the project directory
 
+#![example](https://github.com/maxzod/lighthouse/blob/master/images/demo.gif)
+
 # installation
 
 ```
