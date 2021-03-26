@@ -65,7 +65,8 @@ Future<void> fire() async {
     final changedFile = e.path.replaceAll(Directory.current.path, '');
 
     /// print msg
-    Logger.red('🕛 ${DateTime.now().toIso8601String()} changes occurred on $changedFile');
+    Logger.red(
+        '🕛 ${DateTime.now().toIso8601String()} changes occurred on $changedFile');
 
     /// restart the app
     try {
