@@ -26,12 +26,11 @@ abstract class Logger {
 // app process
 Process? process;
 
-Future<void> boot() async {
-  const mainFile = './lib/main.dart';
-  if (!File(mainFile).existsSync()) {
+Future<void> boot(String fileName) async {
+  if (!File(fileName).existsSync()) {
     /// print error msg
     Logger.red('❌ cant run the app');
-    Logger.red('❌ File $mainFile not found.');
+    Logger.red('❌ File $fileName not found.');
 
     /// go back
     return;
@@ -41,7 +40,7 @@ Future<void> boot() async {
   process?.kill(ProcessSignal.sigkill);
 
   /// fire up new `Process`
-  process = await Process.start('dart', [mainFile]);
+  process = await Process.start('dart', [fileName]);
   // print The standard output stream of the process
   process!.stdout.transform(utf8.decoder).listen(print);
 
@@ -49,7 +48,7 @@ Future<void> boot() async {
   process!.stderr.transform(utf8.decoder).listen(print);
 }
 
-Future<void> fire() async {
+Future<void> fire({String filename = './lib/main.dart'}) async {
   /// current project path
   final _watcher = DirectoryWatcher(p.absolute(Directory.current.path));
 
@@ -57,7 +56,7 @@ Future<void> fire() async {
   Logger.yellow('lighthouse is ON 🔥');
 
   /// start the app for the first time
-  await boot();
+  await boot(filename);
 
   /// listen for file system changes
   _watcher.events.listen((WatchEvent e) async {
@@ -74,7 +73,7 @@ Future<void> fire() async {
       Logger.white('🔋 restarting the app');
 
       /// boot the app
-      await boot();
+      await boot(filename);
 
       /// print success message
       Logger.yellow('✔️ app is running');
@@ -90,5 +89,24 @@ Future<void> fire() async {
 
 void main(List<String> arguments) {
   // turn the lighthouse on 🔥
-  fire();
+
+  if (arguments.isEmpty) {
+    fire();
+  } else if (arguments.length == 1) {
+    if (arguments.first == 'help') {
+      Logger._white('''
+    lighthouse available commands :
+    lighthouse => to run lib/main.dart and watch for changes an the entire project 
+    lighthouse <file-name> => to run <file-name> and watch for changes an the entire project 
+
+    for easy of use you can use replace lighthouse with lh and will work the same 
+    lh => to run lib/main.dart and watch for changes an the entire project 
+    lh <file-name> => to run <file-name> and watch for changes an the entire project 
+    ''');
+    } else {
+      fire(filename: arguments.first);
+    }
+  } else {
+    Logger.red('only pass one argument');
+  }
 }

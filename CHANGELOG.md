@@ -1,3 +1,9 @@
+## 0.0.0-beta.4
+
+- new feature (pass file name as argument to the lighthouse command)
+- update readme
+- add demo gif
+
 ## 0.0.0-beta.3
 
 - fix readme

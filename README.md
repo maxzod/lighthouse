@@ -14,7 +14,6 @@ or if you are using flutter
 
 ```
 flutter pub global activate get_cli
-
 ```
 
 # usage
@@ -23,16 +22,17 @@ flutter pub global activate get_cli
 
 ```
 lighthouse
-
 ```
 
-OR
+to run lib/main.dart and watch for changes an the entire project
 
 ```
-lh
+lighthouse <file-name>
 ```
 
-## which will run ./lib/main.dart and wait for changes to restart it ;
+to run <file-name> and watch for changes an the entire project
+
+For easy of use you can use replace `lighthouse` with `lh` and will work the same
 
 # TODO :
 
