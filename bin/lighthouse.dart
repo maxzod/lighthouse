@@ -1,10 +1,27 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:ansicolor/ansicolor.dart';
 
 import 'package:watcher/watcher.dart';
 import 'package:path/path.dart' as p;
 
-import 'logger.dart';
+abstract class Logger {
+  static final _red = AnsiPen()..red(bold: true);
+  static final _white = AnsiPen()..white(bold: true);
+  static final _yellow = AnsiPen()..yellow(bold: true);
+
+  static void red(String msg) {
+    print(Logger._red(msg));
+  }
+
+  static void white(String msg) {
+    print(Logger._white(msg));
+  }
+
+  static void yellow(String msg) {
+    print(Logger._yellow(msg));
+  }
+}
 
 // app process
 Process? process;

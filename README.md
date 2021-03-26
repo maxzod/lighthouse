@@ -8,6 +8,13 @@
 pub global active lighthouse
 ```
 
+or if you are using flutter
+
+```
+flutter pub global activate get_cli
+
+```
+
 # usage
 
 ## in your terminal
@@ -24,18 +31,6 @@ lh
 ```
 
 ## which will run ./lib/main.dart and wait for changes to restart it ;
-
-## need another file path ?
-
-```
-lighthouse <file-path>
-```
-
-OR
-
-```
-lh <file-path>
-```
 
 # TODO :
 
