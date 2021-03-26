@@ -1,3 +1,7 @@
+## 0.0.0-beta.3
+
+- fix readme
+
 ## 0.0.0-beta.2
 
 - remove file
