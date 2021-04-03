@@ -48,7 +48,7 @@ Future<void> boot(String fileName) async {
   process!.stderr.transform(utf8.decoder).listen(print);
 }
 
-Future<void> fire({String filename = './lib/main.dart'}) async {
+Future<void> fire({String filename = './bin/main.dart'}) async {
   /// current project path
   final _watcher = DirectoryWatcher(p.absolute(Directory.current.path));
 
@@ -96,17 +96,17 @@ void main(List<String> arguments) {
     if (arguments.first == 'help') {
       Logger._white('''
     lighthouse available commands :
-    lighthouse => to run lib/main.dart and watch for changes an the entire project 
+    lighthouse => to run bin/main.dart and watch for changes an the entire project 
     lighthouse <file-name> => to run <file-name> and watch for changes an the entire project 
 
     for easy of use you can use replace lighthouse with lh and will work the same 
-    lh => to run lib/main.dart and watch for changes an the entire project 
+    lh => to run bin/main.dart and watch for changes an the entire project 
     lh <file-name> => to run <file-name> and watch for changes an the entire project 
     ''');
     } else {
       fire(filename: arguments.first);
     }
   } else {
-    Logger.red('only pass one argument');
+    Logger.red('only pass one argument either help or the entry point path');
   }
 }

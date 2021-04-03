@@ -1,3 +1,7 @@
+## 0.0.1
+
+- BREAKING : default path is => bin/main.dart
+
 ## 0.0.0-beta.4
 
 - new feature (pass file name as argument to the lighthouse command)
