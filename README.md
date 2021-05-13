@@ -24,12 +24,16 @@ flutter pub global activate lighthouse
 
 ```
 lighthouse
+// or
+lh
 ```
 
 to run lib/main.dart and watch for changes an the entire project
 
 ```
 lighthouse <file-name>
+or
+lh <file-name>
 ```
 
 to run <file-name> and watch for changes an the entire project
