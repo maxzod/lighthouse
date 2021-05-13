@@ -1,3 +1,9 @@
+## 0.0.2
+
+- add help command => lh help
+- refactor the code
+- change the log messages style
+
 ## 0.0.1
 
 - BREAKING : default path is => bin/main.dart

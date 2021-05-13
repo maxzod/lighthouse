@@ -1,6 +1,6 @@
 name: lighthouse
 description: lighthouse will watch your project files changes and restart the app automaticity
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/maxzod/lighthouse
 repository: https://github.com/maxzod/lighthouse
 issue_tracker: https://github.com/maxzod/lighthouse/issues

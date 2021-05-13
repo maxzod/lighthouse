@@ -1,36 +1,21 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:ansicolor/ansicolor.dart';
 
 import 'package:watcher/watcher.dart';
 import 'package:path/path.dart' as p;
+import 'logger.dart' as logger;
 
-abstract class Logger {
-  static final _red = AnsiPen()..red(bold: true);
-  static final _white = AnsiPen()..white(bold: true);
-  static final _yellow = AnsiPen()..yellow(bold: true);
-
-  static void red(String msg) {
-    print(Logger._red(msg));
-  }
-
-  static void white(String msg) {
-    print(Logger._white(msg));
-  }
-
-  static void yellow(String msg) {
-    print(Logger._yellow(msg));
-  }
-}
-
+DateTime get _nowTime => DateTime.now();
+String get now =>
+    '${_nowTime.year}-${_nowTime.month}-${_nowTime.day} ${_nowTime.hour}:${_nowTime.minute}';
 // app process
 Process? process;
 
 Future<void> boot(String fileName) async {
   if (!File(fileName).existsSync()) {
     /// print error msg
-    Logger.red('❌ cant run the app');
-    Logger.red('❌ File $fileName not found.');
+    logger.red('[🔥] ❌ cant run the app');
+    logger.red('[🔥] ❌ File $fileName not found.');
 
     /// go back
     return;
@@ -53,7 +38,7 @@ Future<void> fire({String filename = './bin/main.dart'}) async {
   final _watcher = DirectoryWatcher(p.absolute(Directory.current.path));
 
   /// print msg
-  Logger.yellow('lighthouse is ON 🔥');
+  logger.yellow('[🔥] lighthouse is ON ');
 
   /// start the app for the first time
   await boot(filename);
@@ -64,25 +49,24 @@ Future<void> fire({String filename = './bin/main.dart'}) async {
     final changedFile = e.path.replaceAll(Directory.current.path, '');
 
     /// print msg
-    Logger.red(
-        '🕛 ${DateTime.now().toIso8601String()} changes occurred on $changedFile');
+    logger.red('[🔥] 🕛 changes occurred in $changedFile at [$now]');
 
     /// restart the app
     try {
       /// print msg
-      Logger.white('🔋 restarting the app');
+      logger.white('[🔥] 🔋 restarting the app');
 
       /// boot the app
       await boot(filename);
 
       /// print success message
-      Logger.yellow('✔️ app is running');
+      logger.yellow('[🔥] ✔️  app is running');
     } catch (e) {
       /// print error msg
-      Logger.red('❌ cant run the app');
+      logger.red("[🔥] ❌ can't run the app");
 
       /// print the captured exception
-      Logger.yellow(e.toString());
+      logger.yellow(e.toString());
     }
   });
 }
@@ -94,19 +78,22 @@ void main(List<String> arguments) {
     fire();
   } else if (arguments.length == 1) {
     if (arguments.first == 'help') {
-      Logger._white('''
+      logger.white('''
+    [🔥] 🧾
     lighthouse available commands :
     lighthouse => to run bin/main.dart and watch for changes an the entire project 
     lighthouse <file-name> => to run <file-name> and watch for changes an the entire project 
-
-    for easy of use you can use replace lighthouse with lh and will work the same 
+    
+    for easy of use you can use replace lighthouse with `lh` and it will work the same 
     lh => to run bin/main.dart and watch for changes an the entire project 
-    lh <file-name> => to run <file-name> and watch for changes an the entire project 
+    lh <file-name> => to run <file-name> and watch for changes an the entire project
+     
     ''');
     } else {
       fire(filename: arguments.first);
     }
   } else {
-    Logger.red('only pass one argument either help or the entry point path');
+    logger.red(
+        'only pass one argument either help or the entry point to your project');
   }
 }
