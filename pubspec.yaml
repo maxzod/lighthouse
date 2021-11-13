@@ -1,6 +1,6 @@
 name: lighthouse
-description: lighthouse will watch your project files changes and restart the app automaticity
-version: 0.0.2
+description: queen CLI , support integration with queen packages system
+version: 0.0.3-beta
 publish_to: "none"
 homepage: https://github.com/maxzod/lighthouse
 repository: https://github.com/maxzod/lighthouse
@@ -12,19 +12,25 @@ environment:
 dependencies:
   path: ^1.8.0
   # watch files system
-  watcher: ^1.0.0
+  # watcher: ^1.0.0
   # to log in the terminal with colors
-  ansicolor: ^2.0.1
-  args: ^2.3.0
-  cli_dialog: ^0.5.0
-  recase: ^4.0.0
-  # nations:
-  #   git:
-  #     url: git@github.com:maxzod/nations.git
+  # ansicolor: ^2.0.1
+  # args: ^2.3.0
+  # cli_dialog: ^0.5.0
+  # recase: ^4.0.0
+  equatable: ^2.0.3
+  nations:
+    git:
+      url: git@github.com:maxzod/nations.git
+  df_builder:
+    git:
+      url: git@github.com:maxzod/df_builder.git
 
 dev_dependencies:
   # lint
   lints: ^1.0.1
+  flutter_test:
+    sdk: flutter
 
 executables:
   lh: lighthouse

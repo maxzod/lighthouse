@@ -1,21 +1,12 @@
-import 'dart:io';
-
-import 'package:lighthouse/lighthouse.dart';
+import 'package:lighthouse/src/commands/locale/make.dart';
 
 void main(List<String> args) async {
-  print('action');
-  try {
-    if (args.isEmpty) {
-      print('[LH] args is Empty have to exit 🤷‍♀️');
-      exit(0);
-    } else if (args.first != 'make:locale') {
-      print('[LH] command is not supported !');
-      exit(0);
-    } else {
-      await MakeLocaleCommand().handle(args);
-    }
-  } catch (e, st) {
-    print('[LH] EXCEPTION : $e');
-    print(st);
+  if (args.isEmpty) return;
+  if (args.first == 'tr:make') {
+    await LocaleMakeCommand().handle(args);
+    // TODO :: format after makeing
+    print('done 👑');
+  } else {
+    print(args.join());
   }
 }

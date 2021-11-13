@@ -1,22 +1,22 @@
 {
-    "package_name": "أمم",
-    "date": "التاريخ",
-    "time": "الوقت",
-    "enter": "دخول",
-    "edit": "تعديل",
-    "show": "عرض",
-    "delete": "حذف",
-    "error": "خطا",
-    "internet": "انترنت",
-    "no": "لا",
-    "yes": "نعم",
+    "package_name": "nations",
+    "date": "date",
+    "time": "time",
+    "enter": "enter",
+    "edit": "edit",
+    "show": "show",
+    "delete": "delete",
+    "error": "error",
+    "internet": "internet",
+    "no": "no",
+    "yes": "yes",
     "gender": {
-        "male": "ذكر",
-        "female": "انثي"
+        "male": "male",
+        "female": "female"
     },
     "person": {
-        "male": "سيدي",
-        "female": "انسه"
+        "male": "person",
+        "female": "person"
     },
     "validation": {
         "email": "فاليديشن ومن داخله البريد",

@@ -1,19 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:lighthouse/src/exceptions/dir_does_not_exist.dart';
-import 'package:lighthouse/src/exceptions/dir_is_empty.dart';
-import 'package:lighthouse/src/exceptions/message.dart';
-
 Future<List<File>> loadDirectoryFiles(String path) async {
   final dir = Directory(path);
   final dirExist = await dir.exists();
-  if (!dirExist) throw DirDoesNotExist(path);
+  if (!dirExist) throw 'DirDoesNotExist($path)';
   final dirFiles = dir.listSync();
-  if (dirFiles.isEmpty) throw DirIsEmpty(path);
+  if (dirFiles.isEmpty) throw 'DirIsEmpty($path)';
   final jsonFiles = dirFiles.where((element) => element.path.endsWith('json'));
   if (jsonFiles.isEmpty) {
-    throw MessageException('dir "$path" does not have any json Files');
+    throw 'dir "$path" does not have any json Files';
   }
 
   ///* validate all json files is locle named
@@ -33,7 +29,7 @@ Future<List<File>> loadDirectoryFiles(String path) async {
 
   // final cotnent =
 
-  return [];
+  return dir.listSync().map((e) => File(e.path)).toList();
 }
 
 Future<Map<String, dynamic>> readJsonContent(String path) async {
