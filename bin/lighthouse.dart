@@ -1,12 +1,15 @@
-import 'package:lighthouse/src/commands/locale/make.dart';
+import 'package:args/command_runner.dart';
+import 'package:lighthouse/src/commands/init.dart';
+import 'package:lighthouse/src/commands/tr.dart';
 
 void main(List<String> args) async {
-  if (args.isEmpty) return;
-  if (args.first == 'tr:make') {
-    await LocaleMakeCommand().handle(args);
-    // TODO :: format after makeing
-    print('done 👑');
-  } else {
-    print(args.join());
+  try{
+  final runner = CommandRunner('lh, lighthouse', 'manages our Queen framework');
+  runner.addCommand(Init());
+  runner.addCommand(TR());
+  await runner.run(args);
+  }catch(e){
+    print(e);
   }
 }
+

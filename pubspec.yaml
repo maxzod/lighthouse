@@ -7,24 +7,17 @@ repository: https://github.com/maxzod/lighthouse
 issue_tracker: https://github.com/maxzod/lighthouse/issues
 environment:
   sdk: ">=2.12.0 <3.0.0"
-  # flutter: ">=1.17.0"
 
 dependencies:
   path: ^1.8.0
-  # watch files system
-  # watcher: ^1.0.0
-  # to log in the terminal with colors
-  # ansicolor: ^2.0.1
-  # args: ^2.3.0
-  # cli_dialog: ^0.5.0
-  # recase: ^4.0.0
   equatable: ^2.0.3
-  nations:
-    git:
-      url: git@github.com:maxzod/nations.git
+  nations: 0.0.1
   df_builder:
     git:
-      url: git@github.com:maxzod/df_builder.git
+      url: https://github.com/maxzod/df_builder.git
+      ref: de3d2a92e2a2d67ee7a6a2d3e4fe6022cb11ef76
+  args: ^2.3.0
+  archive: ^3.1.6
 
 dev_dependencies:
   # lint
