@@ -12,5 +12,6 @@ ValueType feildType(dynamic value) {
       return ValueType.nested;
     }
   }
+   return ValueType.string;
   throw UnsupportedError('type $value is not supported');
 }
