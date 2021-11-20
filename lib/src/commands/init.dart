@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:archive/archive_io.dart';
 import 'package:args/command_runner.dart';
-import 'package:recase/recase.dart';
 
 class Init extends Command {
   @override

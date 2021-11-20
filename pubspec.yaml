@@ -15,7 +15,7 @@ dependencies:
   df_builder:
     git:
       url: https://github.com/maxzod/df_builder.git
-      ref: de3d2a92e2a2d67ee7a6a2d3e4fe6022cb11ef76
+      ref: a05d738156a027cf2578884edb3ef3b631d81cee
   args: ^2.3.0
   archive: ^3.1.6
 

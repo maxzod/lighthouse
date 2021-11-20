@@ -1,8 +1,13 @@
+import 'package:lighthouse/src/exceptions/tr/bad_key_type.dart';
 import 'package:lighthouse/src/helpers/is_valid_gender.dart';
 
 import '../enums.dart';
 
-ValueType feildType(dynamic value) {
+ValueType validateFelidType({
+  required String key,
+  required Object? value,
+  String? language,
+}) {
   if (value is String) {
     return ValueType.string;
   } else if (value is Map<String, dynamic>) {
@@ -12,6 +17,9 @@ ValueType feildType(dynamic value) {
       return ValueType.nested;
     }
   }
-   return ValueType.string;
-  throw UnsupportedError('type $value is not supported');
+  throw BadKeyType(
+    key: key,
+    language: language ?? 'null',
+    type: value.runtimeType.toString(),
+  );
 }

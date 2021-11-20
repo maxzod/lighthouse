@@ -68,11 +68,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: de3d2a92e2a2d67ee7a6a2d3e4fe6022cb11ef76
-      resolved-ref: de3d2a92e2a2d67ee7a6a2d3e4fe6022cb11ef76
+      ref: a05d738156a027cf2578884edb3ef3b631d81cee
+      resolved-ref: a05d738156a027cf2578884edb3ef3b631d81cee
       url: "https://github.com/maxzod/df_builder.git"
     source: git
-    version: "0.0.1-beta"
+    version: "0.0.1"
   equatable:
     dependency: "direct main"
     description:

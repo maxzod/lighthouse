@@ -1,15 +1,24 @@
 import 'package:args/command_runner.dart';
 import 'package:lighthouse/src/commands/init.dart';
-import 'package:lighthouse/src/commands/tr.dart';
+import 'package:lighthouse/src/commands/tr_make.dart';
+import 'package:lighthouse/src/exceptions/tr/tr_exception.dart';
 
 void main(List<String> args) async {
-  try{
-  final runner = CommandRunner('lh, lighthouse', 'manages our Queen framework');
-  runner.addCommand(Init());
-  runner.addCommand(TR());
-  await runner.run(args);
-  }catch(e){
-    print(e);
+  try {
+    final runner =
+        CommandRunner('lh, lighthouse', ' ⚡ : CLI For Flutter Queen 👑 .');
+
+    /// * create new project with queen structure
+    runner.addCommand(Init());
+
+    /// * generate TR class
+    runner.addCommand(TR());
+
+    await runner.run(args);
+  } on TrException catch (e) {
+    print('LH :: Can\'t Generate TR File !');
+    print('LH ::' + e.toString());
+  } catch (e) {
+    print(e.toString());
   }
 }
-
