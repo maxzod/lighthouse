@@ -8,7 +8,7 @@ import 'package:recase/recase.dart';
 
 import 'package:args/command_runner.dart';
 
-import '../enums.dart';
+import '../../enums.dart';
 
 class TR extends Command {
   @override
@@ -18,7 +18,7 @@ class TR extends Command {
 
   @override
   Future<void> run() async {
-    final jsonAssets = await loadDirectoryFiles('./assets/lang/');
+    final jsonAssets = await loadDirectoryJsonFiles('./assets/lang/');
     final languages = supportedLocales(jsonAssets);
     final langAssets = <String, Map<String, dynamic>>{};
     final keys = <String>{};

@@ -5,7 +5,7 @@ import 'package:lighthouse/src/exceptions/tr/missing_key.dart';
 import 'package:lighthouse/src/helpers/string.dart';
 
 /// return supported locales based on files names
-List<String> supportedLocales(List<File> files) {
+List<String> supportedLocales(List<FileSystemEntity> files) {
   return files
       .map((f) => f.path.split('/').last.replaceAll('.json', ''))
       .toList();

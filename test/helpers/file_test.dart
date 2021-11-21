@@ -24,18 +24,18 @@ void main() {
   });
   group('loadDirFiles function', () {
     test('should return a list of files', () async {
-      final files = await loadDirectoryFiles('./assets/lang');
+      final files = await loadDirectoryJsonFiles('./assets/lang');
       expect(files, isNotEmpty);
     });
     test('it throw exception if it does not exist', () async {
       expect(
-        () => loadDirectoryFiles('/foo/bar'),
+        () => loadDirectoryJsonFiles('/foo/bar'),
         throwsA(isA<DirDoesNotExist>()),
       );
     });
     test('it throw exception if it does not have any json files', () async {
       expect(
-        () => loadDirectoryFiles('testdir'),
+        () => loadDirectoryJsonFiles('testdir'),
         throwsA(isA<DirDoesNotContainJsonFiles>()),
       );
     });

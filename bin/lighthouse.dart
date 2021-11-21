@@ -1,6 +1,7 @@
 import 'package:args/command_runner.dart';
+import 'package:lighthouse/src/commands/assets/make.dart';
 import 'package:lighthouse/src/commands/init.dart';
-import 'package:lighthouse/src/commands/tr_make.dart';
+import 'package:lighthouse/src/commands/tr/make.dart';
 import 'package:lighthouse/src/exceptions/tr/tr_exception.dart';
 
 void main(List<String> args) async {
@@ -13,6 +14,10 @@ void main(List<String> args) async {
 
     /// * generate TR class
     runner.addCommand(TR());
+
+    /// * Assets
+    /// * generate assets
+    runner.addCommand(AssetsMakeCommand());
 
     await runner.run(args);
   } on TrException catch (e) {
