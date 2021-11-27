@@ -40,7 +40,6 @@ class TR extends Command {
       name: 'nations_gen.dart',
       path: '',
     );
-
     final trGetters = buildClassGetters(map: langAssets, dfBuilder: dfBuilder);
 
     dfBuilder.addClass(ClassBuilder(
@@ -57,7 +56,6 @@ class TR extends Command {
     if (await genFile.exists()) await genFile.delete();
     await genFile.writeAsString(dfBuilder.toString());
     // await genFile.writeAsString('$interfacesBuffer \n $cBuilder ');
-    // TODO :: format file after its generated
   }
 }
 
@@ -99,12 +97,12 @@ List<ClassGetter> buildClassGetters({
   final getters = <ClassGetter>[];
   for (final key in map.values.first.keys) {
     final newParents = [...parents, key];
-    switch (validateFelidType(key: key, value: map[key])) {
+    switch (validateFelidType(key: key, value: map.values.first[key])) {
       case ValueType.string:
         getters.add(
           ClassGetter(
             //    deprecatedMessage:_buildGetterDepMsg(),
-            comments: '  // * `$key` => `ar` ',
+            comments: '  /// * `ar` => `${map.values.first[key]}` ',
             isStatic: useStaticGetters,
             name: key,
             type: 'String',
@@ -120,7 +118,7 @@ List<ClassGetter> buildClassGetters({
         );
         getters.add(
           ClassGetter(
-            comments: '// * Foo ',
+            comments: '/// * Foo ',
             isStatic: useStaticGetters,
             name: key,
             type: buildInterfaceName(key),

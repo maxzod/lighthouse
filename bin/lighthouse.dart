@@ -4,7 +4,9 @@ import 'package:lighthouse/src/commands/init.dart';
 import 'package:lighthouse/src/commands/tr/make.dart';
 import 'package:lighthouse/src/exceptions/tr/tr_exception.dart';
 
-void main(List<String> args) async {
+Future<void> main(List<String> args) async {
+  // await AssetsMakeCommand().run();
+  // return;
   try {
     final runner =
         CommandRunner('lh, lighthouse', ' ⚡ : CLI For Flutter Queen 👑 .');

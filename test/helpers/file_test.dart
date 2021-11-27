@@ -48,4 +48,23 @@ void main() {
       expect(json, isNotEmpty);
     });
   });
+
+  group('isParentDir', () {
+    test('should return true if is the same path', () async {
+      expect(
+          isParentDir('assets/lang/foo.bar', 'assets\\lang\\foo.bar'), isTrue);
+    });
+    test('should return true if it is the parent dir', () async {
+      expect(isParentDir('assets/lang/', 'assets\\lang\\ar.json'), isTrue);
+    });
+    test('it will return false if is not direct parent', () {
+      expect(
+          isParentDir('assets/lang/', 'assets\\lang\\foo\\en.json'), isFalse);
+    });
+    test('should return false if it is not a parent dir', () async {
+      expect(
+          isParentDir('./assets/ang/en.json', '.\\assets\\lang\\foo\\en.json'),
+          isFalse);
+    });
+  });
 }

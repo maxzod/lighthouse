@@ -18,6 +18,7 @@ dependencies:
       ref: a05d738156a027cf2578884edb3ef3b631d81cee
   args: ^2.3.0
   archive: ^3.1.6
+  yaml: ^3.1.0
 
 dev_dependencies:
   # lint
@@ -28,3 +29,13 @@ dev_dependencies:
 executables:
   lh: lighthouse
   lighthouse: lighthouse
+
+flutter:
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/
