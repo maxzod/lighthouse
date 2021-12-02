@@ -102,7 +102,7 @@ List<ClassGetter> buildClassGetters({
         getters.add(
           ClassGetter(
             //    deprecatedMessage:_buildGetterDepMsg(),
-            comments: '  /// * `ar` => `${map.values.first[key]}` ',
+            comments: buildKeyComments(key, map),
             isStatic: useStaticGetters,
             name: key,
             type: 'String',
@@ -118,7 +118,7 @@ List<ClassGetter> buildClassGetters({
         );
         getters.add(
           ClassGetter(
-            comments: '/// * Foo ',
+            comments: '/// * Nested ',
             isStatic: useStaticGetters,
             name: key,
             type: buildInterfaceName(key),
@@ -130,6 +130,15 @@ List<ClassGetter> buildClassGetters({
     }
   }
   return getters;
+}
+
+String buildKeyComments(String key, Map<String, Map<String, dynamic>> first) {
+  final buffer = StringBuffer();
+  for (final lang in first.keys) {
+    // buffer.write('lang is $lang \n');
+    buffer.writeln('  /// * `$lang` => `${first[lang]![key]}` ');
+  }
+  return buffer.toString();
 }
 
 String buildKeyWithParents(String key, List<String> parents) {
