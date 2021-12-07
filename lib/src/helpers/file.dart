@@ -43,6 +43,13 @@ bool isParentDir(String parent, String child) {
           child.startsWith(parent.replaceAll('/', path.separator)));
 }
 
-bool isDir(String path) {
+bool isFilePath(String path) {
   return path.split(separator).last.contains('.');
 }
+
+/// return the file name with the extension
+String findFileName(String path) => path.split(separator).last;
+
+/// return the file  extension
+/// foo.mp3 => mp3
+String findFileExtension(String path) => path.split('.').last;

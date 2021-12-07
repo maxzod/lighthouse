@@ -1,6 +1,5 @@
 import 'package:args/command_runner.dart';
 import 'package:lighthouse/src/commands/assets/make.dart';
-import 'package:lighthouse/src/commands/init.dart';
 import 'package:lighthouse/src/commands/tr/make.dart';
 import 'package:lighthouse/src/exceptions/tr/tr_exception.dart';
 
@@ -12,7 +11,7 @@ Future<void> main(List<String> args) async {
         CommandRunner('lh, lighthouse', ' ⚡ : CLI For Flutter Queen 👑 .');
 
     /// * create new project with queen structure
-    runner.addCommand(Init());
+    // runner.addCommand(Init());
 
     /// * generate TR class
     runner.addCommand(TR());

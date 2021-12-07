@@ -12,6 +12,6 @@ class MissingKey implements TrException {
 
   @override
   String toString() {
-    return 'MissingKey: key "$key" not found in language "$language"';
+    return ' ⚡ ❌ MissingKey : key "$key" not found in language "$language" .';
   }
 }

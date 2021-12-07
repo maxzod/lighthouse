@@ -13,6 +13,6 @@ class BadKeyType implements TrException {
 
   @override
   String toString() {
-    return 'BadKeyType: $key in $language is $type which is not supported only add String and Map only !';
+    return ' ⚡ ❌  BadKeyType :   $key in $language is $type which is not supported only add String and Map only !  .';
   }
 }

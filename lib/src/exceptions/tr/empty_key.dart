@@ -9,6 +9,6 @@ class EmptyKey implements TrException {
 
   @override
   String toString() {
-    return 'EmptyKey :: $key in language $language is empty ! ';
+    return ' ⚡ ❌  EmptyKey  ::  $key in language $language is empty .';
   }
 }
