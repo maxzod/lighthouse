@@ -67,12 +67,10 @@ packages:
   df_builder:
     dependency: "direct main"
     description:
-      path: "."
-      ref: a05d738156a027cf2578884edb3ef3b631d81cee
-      resolved-ref: a05d738156a027cf2578884edb3ef3b631d81cee
-      url: "https://github.com/maxzod/df_builder.git"
-    source: git
-    version: "0.0.1"
+      name: df_builder
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   equatable:
     dependency: "direct main"
     description:

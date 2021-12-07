@@ -1,7 +1,6 @@
 name: lighthouse
 description: queen CLI , support integration with queen packages system
-version: 0.0.3-beta
-publish_to: "none"
+version: 0.0.4
 homepage: https://github.com/maxzod/lighthouse
 repository: https://github.com/maxzod/lighthouse
 issue_tracker: https://github.com/maxzod/lighthouse/issues
@@ -12,16 +11,12 @@ dependencies:
   path: ^1.8.0
   equatable: ^2.0.3
   nations: 0.0.1
-  df_builder:
-    git:
-      url: https://github.com/maxzod/df_builder.git
-      ref: a05d738156a027cf2578884edb3ef3b631d81cee
+  df_builder: 0.0.4
   args: ^2.3.0
   archive: ^3.1.6
   yaml: ^3.1.0
 
 dev_dependencies:
-  # lint
   lints: ^1.0.1
   flutter_test:
     sdk: flutter
@@ -31,11 +26,6 @@ executables:
   lighthouse: lighthouse
 
 flutter:
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
-
-  # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
