@@ -1,15 +1,6 @@
-import 'dart:io';
-
 import 'package:lighthouse/src/exceptions/tr/empty_key.dart';
 import 'package:lighthouse/src/exceptions/tr/missing_key.dart';
 import 'package:lighthouse/src/helpers/string.dart';
-
-/// return supported locales based on files names
-List<String> supportedLocales(List<FileSystemEntity> files) {
-  return files
-      .map((f) => f.path.split('/').last.replaceAll('.json', ''))
-      .toList();
-}
 
 /// * return which key is missing from which locale
 void findMissingKeys({

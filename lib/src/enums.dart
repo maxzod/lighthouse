@@ -1,1 +1,1 @@
-enum ValueType { string, gender, nested }
+enum ValueType { string, nested }

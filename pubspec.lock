@@ -160,7 +160,7 @@ packages:
       name: nations
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1"
+    version: "0.0.4"
   path:
     dependency: "direct main"
     description:
@@ -211,7 +211,7 @@ packages:
     source: hosted
     version: "4.2.4"
   recase:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: recase
       url: "https://pub.dartlang.org"

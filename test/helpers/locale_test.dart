@@ -1,13 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lighthouse/src/commands/tr/make.dart';
 import 'package:lighthouse/src/exceptions/tr/missing_key.dart';
 import 'package:lighthouse/src/helpers/locale.dart';
 
 void main() {
   group('supportedLocales function', () {
     test('should return supported locales', () {
-      final sLocales = supportedLocales([File('ar.json'), File('foo/en.json')]);
+      final sLocales =
+          findSupportedLocales([File('ar.json'), File('foo/en.json')]);
       expect(sLocales, ['ar', 'en']);
     });
   });

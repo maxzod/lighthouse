@@ -63,6 +63,11 @@
     "december": "December",
     "auth": {
         "password": "password",
+        "foo": {
+            "bar": {
+                "zee": "حساب تجريبي"
+            }
+        },
         "sign_in": "sign in",
         "sign_up": "sign up",
         "sign_out": "sign out"
