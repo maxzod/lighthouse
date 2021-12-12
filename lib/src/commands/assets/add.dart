@@ -1,55 +1,108 @@
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
-// import 'package:json2yaml/json2yaml.dart';
 import 'package:lighthouse/src/helpers/file.dart';
-// import 'package:yaml/yaml.dart';
 import 'package:yaml_edit/yaml_edit.dart';
 
 class AssetsAddCommand extends Command {
+  /// command description
   @override
   String get description => 'add assets folder content to pubspec.yaml';
 
+  /// command name
   @override
   String get name => 'assets:add';
   @override
   Future<void> run() async {
-    final newPaths = <String>[];
+    /// contains the assets directory children in flat list
+    /// ```dart
+    /// [
+    ///  'assets/foo.png',
+    ///  'assets/bar.png',
+    /// 'assets/images/logo_black.png',
+    /// 'assets/images/logo_white.png',
+    /// 'assets/images/products/prod_1.png',
+    /// 'assets/images/products/prod_2.png',
+    /// 'assets/images/products/prod_3.png',
+    ///]
+    ///```
+    final assetsDirChildren = <String>[];
+
+    /// find root assets `./assets` children
     final items = await loadDirectoryFiles('./assets');
+
+    /// extract the children content
     for (final fse in items) {
       final list = await findInnerContent(fse);
-      newPaths.addAll(list);
+
+      /// group them in one list
+      assetsDirChildren.addAll(list);
     }
 
+    /// read the content of `pubspec.yaml` file
     final pubspecContent = await File('./pubspec.yaml').readAsString();
+
+    /// create editor to edit the `[flutter][assets]` tag
     final doc = YamlEditor(pubspecContent);
 
-    doc.update(
-      ['flutter', 'assets'],
-      newPaths.map((e) {
+    final newAssets = assetsDirChildren.map(
+      (e) {
         String path = e;
-        if (e.startsWith('./')) {
-          path = e.substring(2);
-        }
+
+        /// remove the `./` prefix from the path start
+        if (e.startsWith('./')) path = e.substring(2);
+
         return path.replaceAll('\\', '/');
-      }).toList(),
+      },
+    ).toList();
+
+    /// this line will delete the old content
+    /// and adds the new list
+    /// ```yaml
+    ///    flutter:
+    ///     assets:
+    ///     - assets/foo.png
+    ///     - assets/bar.png
+    /// ```
+    doc.update(
+      [
+        /// the root tag
+        'flutter',
+
+        /// the tag to edit
+        'assets',
+      ],
+      newAssets,
     );
 
+    /// save the pubspec.yaml file
     File('./pubspec.yaml').writeAsString(doc.toString());
   }
+
+  /// end of the command
 }
 
+/// give it a file system entity
+/// it will return a list that contains the paths to every single file in that `FileSystemEntity`
 Future<List<String>> findInnerContent(FileSystemEntity fse) async {
+  /// if this is a file return the path
   if (isFilePath(fse.path)) return [fse.path];
+
+  /// read the directory content
   final children = await loadDirectoryFiles(fse.path);
-  final paths = <String>[];
+
+  /// to contains the children of this Directory
+  final childrenPaths = <String>[];
   for (final child in children) {
+    /// if this is a file add the path to the children's list
     if (isFilePath(child.path)) {
-      paths.add(child.path);
+      childrenPaths.add(child.path);
     } else {
+      /// recursive call to find the children of this children
       final newPaths = await findInnerContent(child);
-      paths.addAll(newPaths);
+      childrenPaths.addAll(newPaths);
     }
   }
-  return paths;
+
+  return childrenPaths;
 }
