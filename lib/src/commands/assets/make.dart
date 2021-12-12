@@ -13,7 +13,7 @@ final _yamlAssets = <String>[];
 class AssetsMakeCommand extends Command {
   /// command description
   @override
-  String get description => 'make assets class => Assets';
+  String get description => 'make assets class Assets 🎁';
 
   /// command name
   @override
@@ -22,7 +22,7 @@ class AssetsMakeCommand extends Command {
   /// called when a user invokes `lh assets:make`
   @override
   Future<void> run() async {
-    /// load yaml assets from pubspec.yaml
+    /// load yaml assets from `pubspec.yaml`
     /// to make sure this asset is added in pubspec.yaml or not `#2`
     _yamlAssets.addAll(getYamlAssets());
 

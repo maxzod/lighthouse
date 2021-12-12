@@ -4,19 +4,36 @@ import 'package:df_builder/df_builder.dart';
 import 'package:lighthouse/src/config.dart';
 import 'package:lighthouse/src/helpers/file.dart';
 import 'package:lighthouse/src/helpers/locale.dart';
+import 'package:lighthouse/src/helpers/map.dart';
 import 'package:lighthouse/src/helpers/string.dart';
+import 'package:nations_assets/assets/ar.dart';
+import 'package:nations_assets/assets/en.dart';
+import 'package:nations_assets/assets/es.dart';
 import 'package:recase/recase.dart';
 
 import 'package:args/command_runner.dart';
 
 import '../../enums.dart';
 
+Map<String, Object> findAssetsFromNations(String locale) {
+  switch (locale) {
+    case 'ar':
+      return arAssets;
+    case 'en':
+      return enAssets;
+    case 'es':
+      return esAssets;
+    default:
+      return {};
+  }
+}
+
 class TR extends Command {
   static const String kNationsExport = "export 'package:nations/nations.dart';";
 
   /// command description
   @override
-  String get description => 'Creates the generated translation files/assets';
+  String get description => 'Creates the generated translation files/assets 🌍';
 
   /// command name
   @override
@@ -35,18 +52,18 @@ class TR extends Command {
     final supportedLocales = findSupportedLocales(jsonAssets);
 
     /// contains translations from each language from project assets directory
-    final assetsValues = <String, Map<String, dynamic>>{};
+    final assetsFull = <String, Map<String, dynamic>>{};
 
-    ///   TODO :: add queen assets to the list
     for (final locale in supportedLocales) {
-      assetsValues[locale] =
-          await readJsonContent('./assets/lang/$locale.json');
-      keys.addAll(assetsValues[locale]!.keys.toList());
+      final appAssets = await readJsonContent('./assets/lang/$locale.json');
+      final nationsAssets = findAssetsFromNations(locale);
+      assetsFull[locale] = mergeTwoMaps(nationsAssets, appAssets);
     }
+
     for (final key in keys) {
       findMissingKeys(
         key: key,
-        langsAssets: assetsValues,
+        langsAssets: assetsFull,
         supportedLangs: supportedLocales,
       );
     }
@@ -59,7 +76,7 @@ class TR extends Command {
 
     /// root class builder
     final trGetters = buildClassGetters(
-      map: assetsValues,
+      map: assetsFull,
       dfBuilder: dfb,
       useStaticGetters: true,
     );
@@ -134,7 +151,7 @@ List<ClassGetter> buildClassGetters({
         ClassGetter(
           comments: buildKeyComments(key, map),
           isStatic: useStaticGetters,
-          name: key,
+          name: key == 'this' ? 'name' : key,
           type: 'String',
           whatToReturn: buildKeyWithParents(key, newParents),
         ),
@@ -158,12 +175,12 @@ List<ClassGetter> buildClassGetters({
   return getters;
 }
 
-String buildKeyComments(String key, Map<String, Map<String, dynamic>> first) {
+String buildKeyComments(
+  String key,
+  Map<String, Map<String, dynamic>> first,
+) {
   final buffer = StringBuffer();
   for (final lang in first.keys) {
-    // TODO :: add comments to nested keys ;
-    // TODO::(bug) this print ar only for nested keys
-    print(key + '  ' + first.keys.toString());
     buffer.writeln('  /// * `$lang` => `${first[lang]![key]}` ');
   }
   return buffer.toString().trim();
@@ -172,9 +189,9 @@ String buildKeyComments(String key, Map<String, Map<String, dynamic>> first) {
 /// return the key with parents as string separated by `.`
 /// example :
 ///  ```json
-///         "foo": {
-///            "bar": {
-///               "zee": "some value"
+///         "key1": {
+///            "key2": {
+///               "key3": "some value"
 ///           }
 ///      }
 /// ```

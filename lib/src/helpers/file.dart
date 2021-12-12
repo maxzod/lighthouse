@@ -53,3 +53,17 @@ String findFileName(String path) => path.split(separator).last;
 /// return the file  extension
 /// foo.mp3 => mp3
 String findFileExtension(String path) => path.split('.').last;
+
+/// *  load the locale from json files
+/// * why null ? because the file might be corrupted some how or missing a comma in the end !
+Future<Map<String, dynamic>?> loadJsonFileContent(String path) async {
+  // try {
+  //   // *  parse it to string
+  //   return json.decode(
+  //     /// *  load content
+  //     await rootBundle.loadString(path),
+  //   ) as Map<String, dynamic>?;
+  // } catch (_) {
+  //   return null;
+  // }
+}
