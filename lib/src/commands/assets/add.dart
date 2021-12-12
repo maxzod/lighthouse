@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
-import 'package:json2yaml/json2yaml.dart';
+// import 'package:json2yaml/json2yaml.dart';
 import 'package:lighthouse/src/helpers/file.dart';
-import 'package:lighthouse/src/helpers/yaml.dart';
-import 'package:yaml/yaml.dart';
+// import 'package:yaml/yaml.dart';
 import 'package:yaml_edit/yaml_edit.dart';
 
 class AssetsAddCommand extends Command {
@@ -16,43 +14,42 @@ class AssetsAddCommand extends Command {
   String get name => 'assets:add';
   @override
   Future<void> run() async {
-    final newPathes = <String>[];
+    final newPaths = <String>[];
     final items = await loadDirectoryFiles('./assets');
     for (final fse in items) {
       final list = await findInnerContent(fse);
-      newPathes.addAll(list);
+      newPaths.addAll(list);
     }
-    // print(newPathes);
-    final yamlAssets = getYamlAssets();
-    final yaml = loadYaml(File('./pubspec.yaml').readAsStringSync());
 
-    final yamlEditor = YamlEditor(jsonEncode(yaml));
-    yamlEditor.update(['flutter','assets'],
-newPathes.map((e) => ''));
-    
-    // yamlEditor.appendToList(
-    //   ['flutter', 'assets'],
-    //   newPathes,
-    // );
+    final pubspecContent = await File('./pubspec.yaml').readAsString();
+    final doc = YamlEditor(pubspecContent);
 
-    File('./pubspec2.yaml').delete();
-    File('./pubspec2.yaml').create();
-    File('./pubspec2.yaml')
-        .writeAsString(json2yaml(jsonDecode(yamlEditor.toString())));
+    doc.update(
+      ['flutter', 'assets'],
+      newPaths.map((e) {
+        String path = e;
+        if (e.startsWith('./')) {
+          path = e.substring(2);
+        }
+        return path.replaceAll('\\', '/');
+      }).toList(),
+    );
+
+    File('./pubspec.yaml').writeAsString(doc.toString());
   }
 }
 
 Future<List<String>> findInnerContent(FileSystemEntity fse) async {
   if (isFilePath(fse.path)) return [fse.path];
   final children = await loadDirectoryFiles(fse.path);
-  final pathes = <String>[];
+  final paths = <String>[];
   for (final child in children) {
     if (isFilePath(child.path)) {
-      pathes.add(child.path);
+      paths.add(child.path);
     } else {
-      final newPathes = await findInnerContent(child);
-      pathes.addAll(newPathes);
+      final newPaths = await findInnerContent(child);
+      paths.addAll(newPaths);
     }
   }
-  return pathes;
+  return paths;
 }

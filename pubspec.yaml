@@ -10,17 +10,14 @@ environment:
 dependencies:
   path: ^1.8.0
   equatable: ^2.0.3
-  # nations: ^0.0.4
   df_builder: ^0.0.4
   args: ^2.3.0
   archive: ^3.1.6
   yaml: ^3.1.0
   recase: ^4.0.0
   nations_assets: ^0.0.1
-  nations: ^0.0.4
   collection: ^1.15.0
   yaml_edit: ^2.0.1
-  json2yaml: ^3.0.0
 
 dev_dependencies:
   lints: ^1.0.1

@@ -1,3 +1,4 @@
-## 0.0.4
+## 0.0.5
 
-- Initial version, for the new CLI
+- `lh tr:make` not adds nations default values to the `Tr` class (#8)
+-

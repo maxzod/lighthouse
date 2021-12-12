@@ -1,25 +1,14 @@
 # **`Lighthouse 🔥`**
 
-NOTES ::
-const to interfaces
-parent onject name while translating
+<a href="https://pub.dev/packages/lighthouse"><img src="https://img.shields.io/pub/v/lighthouse.svg" alt="Pub"></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="License: MIT"></a>
+[![style: lint](https://img.shields.io/badge/style-lint-4BC0F5.svg)](https://pub.dev/packages/lint)
 
-# Queen - CLI
+# **`PART OF QUEEN FRAMEWORK 👑`**
 
-# installation
+# Queen CLI
 
-```
-pub global active lighthouse
-```
+- can be used outsize the framework
+- for more out-of-box features use it with the rest of the framework
 
-or
-
-```
-flutter pub global activate lighthouse
-```
-
-# Usage
-
-| status | #                                              | command     | options   | example      |
-| ------ | ---------------------------------------------- | ----------- | --------- | ------------ |
-| ✔      | make locale file to use with `Nations` package | make:locale | --------- | `lh tr:make` |
+# [Documentation](https://flutterqueen.github.io/website/)
