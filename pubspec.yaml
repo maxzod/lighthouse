@@ -19,6 +19,8 @@ dependencies:
   nations_assets: ^0.0.1
   nations: ^0.0.4
   collection: ^1.15.0
+  yaml_edit: ^2.0.1
+  json2yaml: ^3.0.0
 
 dev_dependencies:
   lints: ^1.0.1
