@@ -1,3 +1,7 @@
+## 0.0.5-beta.2
+
+- update nations assets to `0.0.2`
+
 ## 0.0.5
 
 - enhancements 🎁 ::
