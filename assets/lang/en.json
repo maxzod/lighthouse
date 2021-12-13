@@ -1,6 +1,5 @@
 {
-   "date": "date",
-   "time": "time",
-   "enter": "enter",
-   "menu": "menu"
+   "fooa": {
+      "aa": "aa"
+   }
 }

@@ -1,36 +1,31 @@
 import 'dart:io';
 
 import 'package:df_builder/df_builder.dart';
+import 'package:lighthouse/queen_map/queen_map.dart';
+import 'package:recase/recase.dart';
+import 'package:args/command_runner.dart';
+
 import 'package:lighthouse/src/config.dart';
+import 'package:lighthouse/src/exceptions/tr_exception.dart';
 import 'package:lighthouse/src/helpers/file.dart';
 import 'package:lighthouse/src/helpers/locale.dart';
-import 'package:lighthouse/src/helpers/map.dart';
+import 'package:lighthouse/src/helpers/nations_assets.dart';
 import 'package:lighthouse/src/helpers/string.dart';
-import 'package:nations_assets/assets/ar.dart';
-import 'package:nations_assets/assets/en.dart';
-import 'package:nations_assets/assets/es.dart';
-import 'package:recase/recase.dart';
-
-import 'package:args/command_runner.dart';
 
 import '../../enums.dart';
 
-Map<String, Object> findAssetsFromNations(String locale) {
-  switch (locale) {
-    case 'ar':
-      return arAssets;
-    case 'en':
-      return enAssets;
-    case 'es':
-      return esAssets;
-    default:
-      return {};
-  }
+const String kNationsExport = "export 'package:nations/nations.dart';";
+
+class FullAssets {
+  final Map<String, Map<String, Object?>> assets;
+
+  FullAssets(this.assets);
+
+  /// * returns supported locales in the application
+  Iterable<String> get supportedLocales => assets.keys;
 }
 
-class TR extends Command {
-  static const String kNationsExport = "export 'package:nations/nations.dart';";
-
+class TRMake extends Command {
   /// command description
   @override
   String get description => 'Creates the generated translation files/assets 🌍';
@@ -39,8 +34,7 @@ class TR extends Command {
   @override
   String get name => 'tr:make';
 
-  /// * contains list of keys from all the languages
-  final keys = <String>[];
+  // /// * contains list of keys from all the languages
 
   /// called when a user invokes `lh tr:make`
   @override
@@ -52,21 +46,18 @@ class TR extends Command {
     final supportedLocales = findSupportedLocales(jsonAssets);
 
     /// contains translations from each language from project assets directory
-    final assetsFull = <String, Map<String, dynamic>>{};
+    final _assetsFullHolder = <String, Map<String, Object?>>{};
 
     for (final locale in supportedLocales) {
+      /// contains translations from each language from project assets directory
       final appAssets = await readJsonContent('./assets/lang/$locale.json');
-      final nationsAssets = findAssetsFromNations(locale);
-      assetsFull[locale] = mergeTwoMaps(nationsAssets, appAssets);
-    }
 
-    for (final key in keys) {
-      findMissingKeys(
-        key: key,
-        langsAssets: assetsFull,
-        supportedLangs: supportedLocales,
-      );
+      /// load the translations from `nations_assets`
+      final nationsAssets = findAssetsFromNations(locale);
+      _assetsFullHolder[locale] = mergeTwoMaps(nationsAssets, appAssets);
     }
+    final fullAssets = FullAssets(_assetsFullHolder);
+    validateLocalizationAssets(fullAssets);
 
     /// `tr.dart` file builder'
     final dfb = DartFileBuilder(
@@ -76,7 +67,7 @@ class TR extends Command {
 
     /// root class builder
     final trGetters = buildClassGetters(
-      map: assetsFull,
+      map: _assetsFullHolder,
       dfBuilder: dfb,
       useStaticGetters: true,
     );
@@ -100,6 +91,28 @@ class TR extends Command {
     if (await genFile.exists()) await genFile.delete();
 
     await genFile.writeAsString(dfb.toString());
+  }
+
+  void validateLocalizationAssets(
+    /// `key` => Locale name
+    /// `value` =>  Locale translations
+    FullAssets fullAssets,
+  ) {
+    final buggedKeys = <TrException>[];
+    for (final lang in fullAssets.supportedLocales) {
+      print('will validate translations');
+
+      for (final key in fullAssets.assets[lang]!.keys) {
+        buggedKeys.addAll(
+          findKeyProblem(
+            key: key,
+            fullAssets: fullAssets,
+          ),
+        );
+      }
+    }
+
+    if (buggedKeys.isNotEmpty) throw TrExceptionsList(buggedKeys);
   }
 
   // end of the command
@@ -145,7 +158,10 @@ List<ClassGetter> buildClassGetters({
   for (final key in map.values.first.keys) {
     final newParents = [...parents, key];
     final valueType = validateFelidType(
-        key: key, value: map.values.first[key], language: key);
+      key: key,
+      value: map.values.first[key],
+      language: key,
+    );
     if (valueType == ValueType.string) {
       getters.add(
         ClassGetter(
@@ -177,11 +193,11 @@ List<ClassGetter> buildClassGetters({
 
 String buildKeyComments(
   String key,
-  Map<String, Map<String, dynamic>> first,
+  Map<String, dynamic> fullTranslations,
 ) {
   final buffer = StringBuffer();
-  for (final lang in first.keys) {
-    buffer.writeln('  /// * `$lang` => `${first[lang]![key]}` ');
+  for (final lang in fullTranslations.keys) {
+    buffer.writeln('  /// * `$lang` => `${fullTranslations[lang]![key]}` ');
   }
   return buffer.toString().trim();
 }
@@ -203,11 +219,4 @@ String buildKeyWithParents(String key, List<String> parents) {
   } else {
     return "'${parents.join('.')}'";
   }
-}
-
-/// *  return supported locales based on files names
-List<String> findSupportedLocales(List<FileSystemEntity> files) {
-  return files
-      .map((f) => f.path.split('/').last.replaceAll('.json', ''))
-      .toList();
 }

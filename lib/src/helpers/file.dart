@@ -67,3 +67,10 @@ Future<Map<String, dynamic>?> loadJsonFileContent(String path) async {
   //   return null;
   // }
 }
+
+/// *  return supported locales based on files names
+List<String> findSupportedLocales(Iterable<FileSystemEntity> files) {
+  return files
+      .map((f) => f.path.split('/').last.replaceAll('.json', ''))
+      .toList();
+}

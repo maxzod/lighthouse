@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lighthouse/src/commands/tr/make.dart';
-import 'package:lighthouse/src/exceptions/tr/missing_key.dart';
+import 'package:lighthouse/src/exceptions/tr_exception.dart';
+import 'package:lighthouse/src/helpers/file.dart';
 import 'package:lighthouse/src/helpers/locale.dart';
 
 void main() {
@@ -17,13 +18,15 @@ void main() {
   group('keyMissingLangs function', () {
     test('should throw missing keys ', () {
       expect(
-          () => findMissingKeys(key: 'foo', supportedLangs: [
-                'ar',
-                'en'
-              ], langsAssets: {
-                'ar': {},
-                'en': {'foo': 'bar'}
-              }),
+          () => findKeyProblem(
+                key: 'foo',
+                fullAssets: FullAssets(
+                  {
+                    'ar': {},
+                    'en': {'foo': 'bar'}
+                  },
+                ),
+              ),
           throwsA(isA<MissingKey>()));
     });
   });

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lighthouse/src/exceptions/tr/missing_key.dart';
+import 'package:lighthouse/src/exceptions/tr_exception.dart';
 
 void main() {
   test('it return the key and the language in the message', () {

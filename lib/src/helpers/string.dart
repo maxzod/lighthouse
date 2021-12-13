@@ -1,4 +1,4 @@
-import 'package:lighthouse/src/exceptions/tr/bad_key_type.dart';
+import 'package:lighthouse/src/exceptions/tr_exception.dart';
 
 import '../enums.dart';
 
@@ -16,6 +16,6 @@ ValueType validateFelidType({
   throw BadKeyType(
     key: key,
     language: language,
-    type: value.runtimeType.toString(),
+    type: value.runtimeType,
   );
 }

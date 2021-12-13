@@ -1,24 +1,36 @@
-import 'package:lighthouse/src/exceptions/tr/empty_key.dart';
-import 'package:lighthouse/src/exceptions/tr/missing_key.dart';
-import 'package:lighthouse/src/helpers/string.dart';
+import 'package:lighthouse/queen_map/queen_map.dart';
+import 'package:lighthouse/src/commands/tr/make.dart';
+import 'package:lighthouse/src/exceptions/tr_exception.dart';
 
 /// * return which key is missing from which locale
-void findMissingKeys({
+List<TrException> findKeyProblem({
   required String key,
-  required Map<String, Map<String, dynamic>> langsAssets,
-  required List<String> supportedLangs,
+  required FullAssets fullAssets,
 }) {
-  for (final lang in supportedLangs) {
-    // TODO :: supporte nested
-    final keyExist = langsAssets[lang]?.containsKey(key) ?? false;
-    if (!keyExist) {
-      throw MissingKey(key: key, language: lang);
-    }
-    final value = langsAssets[lang]![key];
+  final result = <TrException>[];
+  for (final lang in fullAssets.supportedLocales) {
+    final keyValue = findInMap(key, fullAssets.assets[lang]!);
 
-    validateFelidType(key: key, value: value, language: lang);
-    if (value.isEmpty) {
-      throw EmptyKey(key: key, language: lang);
+    if (keyValue == null) {
+      result.add(MissingKey(key: key, language: lang));
+    } else {
+      final value = fullAssets.assets[lang]![key];
+      if (value is String) {
+        if (value.isEmpty) {
+          result.add(EmptyKey(key: key, language: lang));
+        }
+      } else if (value is Map<String, dynamic>) {
+        if (value.isEmpty) {
+          result.add(EmptyKey(key: key, language: lang));
+        }
+      } else {
+        result.add(BadKeyType(
+          key: key,
+          language: lang,
+          type: value.runtimeType,
+        ));
+      }
     }
   }
+  return result;
 }

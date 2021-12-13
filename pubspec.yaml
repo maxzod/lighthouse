@@ -1,6 +1,6 @@
 name: lighthouse
 description: queen CLI , support integration with queen packages system
-version: 0.0.4
+version: 0.0.5-beta.1
 homepage: https://github.com/maxzod/lighthouse
 repository: https://github.com/maxzod/lighthouse
 issue_tracker: https://github.com/maxzod/lighthouse/issues

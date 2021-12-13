@@ -1,1 +1,0 @@
-class TrException implements Exception {}
