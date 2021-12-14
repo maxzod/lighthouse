@@ -84,11 +84,14 @@ Future<List<ClassGetter>> buildClassGetters({
   final getters = <ClassGetter>[];
 
   for (final child in children) {
+    var fileName = findNameWithoutFormat(child.path);
+    if (fileName.isEmpty) continue;
+
     if (child is File) {
       getters.add(ClassGetter(
         comments: _findFSTypeComment(child.path),
         type: 'String',
-        name: findNameWithoutFormat(child.path),
+        name: fileName,
         whatToReturn: '\'${child.path.replaceAll('\\', '/')}\'',
         isStatic: useStaticGetter,
       ));
@@ -105,10 +108,9 @@ Future<List<ClassGetter>> buildClassGetters({
         ClassGetter(
           comments: _findFSTypeComment(child.path),
           isStatic: useStaticGetter,
-          name: findNameWithoutFormat(child.path),
+          name: fileName,
           type: buildInterfaceName(child.path.pathCase.split('/').last),
-          whatToReturn:
-              "${buildInterfaceName(child.path.pathCase.split('/').last)}()",
+          whatToReturn: "${buildInterfaceName(child.path.pathCase.split('/').last)}()",
         ),
       );
     }
