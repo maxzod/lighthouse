@@ -9,19 +9,22 @@ Future<void> main(List<String> args) async {
   try {
     final runner =
         CommandRunner('lh, lighthouse', ' ⚡ : CLI For Flutter Queen 👑 .');
+    final commands = <Command>[
+      // * Localization
+      // generate `Tr` class
+      TRMakeCommand(),
+      // validate localizations assets content
+      TrValidateCommand(),
 
-    // * Localization
-    // * generate TR class
-    runner.addCommand(TRMakeCommand());
-    //  * validate localizations assets content
-    runner.addCommand(TrValidateCommand());
+      // * Assets
+      // generate assets
+      AssetsMakeCommand(),
+      // add assets
+      AssetsAddCommand(),
+    ];
 
-    // * Assets
-    // * generate assets
-    runner.addCommand(AssetsMakeCommand());
-    // * add assets
-    runner.addCommand(AssetsAddCommand());
-
+    ///  * add commands to the runner
+    commands.forEach(runner.addCommand);
     await runner.run(args);
   } on TrException catch (e) {
     print('💡❌:: Can\'t Generate TR File !\n$e');
