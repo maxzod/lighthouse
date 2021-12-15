@@ -4,14 +4,20 @@ import 'package:collection/collection.dart';
 
 /// * merges to maps into single one
 /// * if the key found in both maps it will use the one from the second map
-Map<Object, Object?>? mergeTwoMaps(Object? a, Object? b) {
-  if (a is Map<Object, Object?> && b is Map<Object, Object?>) {
-    return mergeMaps<Object, Object?>(a, b, value: mergeTwoMaps);
-  } else if (b is Map<Object, Object?>) {
-    return b;
-  }
+// Map<Object, Object?>? mergeTwoMaps(Object? a, Object? b) {
+//   if (a is Map<Object, Object?> && b is Map<Object, Object?>) {
+//     return mergeMaps<Object, Object?>(a, b, value: mergeTwoMaps);
+//   } else if (b is Map<Object, Object?>) {
+//     return b;
+//   }
 
-  throw Exception('mergeTwoMaps: invalid types');
+//   throw Exception('mergeTwoMaps: invalid types');
+// }
+dynamic mergeTwoMaps(dynamic a, dynamic b) {
+  if (a is Map<String, Object?> && b is Map<String, Object?>) {
+    return mergeMaps<String, dynamic>(a, b, value: mergeTwoMaps);
+  }
+  return b;
 }
 
 /// goes into the map
