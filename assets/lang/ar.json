@@ -1,6 +1,11 @@
 {
    "fooa": {
-      "aa": "aa",
-      "zee": {}
+      "aa": "aa"
+   },
+   "auth": {
+      "gender": {
+         "male": "aa",
+         "arg": "ss"
+      }
    }
 }

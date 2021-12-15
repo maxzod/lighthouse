@@ -2,6 +2,7 @@ import 'package:args/command_runner.dart';
 import 'package:lighthouse/src/commands/assets/add.dart';
 import 'package:lighthouse/src/commands/assets/make.dart';
 import 'package:lighthouse/src/commands/tr/make.dart';
+import 'package:lighthouse/src/commands/tr/validate.dart';
 import 'package:lighthouse/src/exceptions/tr_exception.dart';
 
 Future<void> main(List<String> args) async {
@@ -15,7 +16,8 @@ Future<void> main(List<String> args) async {
     // runner.addCommand(Init());
 
     /// * generate TR class
-    runner.addCommand(TRMake());
+    runner.addCommand(TRMakeCommand());
+    runner.addCommand(TrValidateCommand());
 
     /// * Assets
     /// * generate assets

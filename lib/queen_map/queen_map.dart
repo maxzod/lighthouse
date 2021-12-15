@@ -26,13 +26,31 @@ Object? findInMap(
   if (keys.isNotEmpty) {
     if (keys.length == 1) return map[keys.first];
     final firstKey = keys.first;
-    if (map[firstKey] != null && map[firstKey] is Map) {
+    final value = map[firstKey];
+    if (value is Map) {
       final newKey = path.replaceFirst('$firstKey.', '');
       return findInMap(
         newKey,
-        map[firstKey] as Map,
+        value,
         splitOperator: splitOperator,
       );
     }
   }
+}
+
+List<String> flatMapKeys(Map<String, Object?> map) {
+  /// full flat list
+  final List<String> flatKeys = <String>[];
+
+  for (final key in map.keys) {
+    final value = map[key];
+    flatKeys.add(key);
+
+    if (value is Map) {
+      final children = flatMapKeys(value as Map<String, Object?>);
+      flatKeys.addAll(children.map((e) => '$key.$e'));
+    }
+  }
+
+  return flatKeys;
 }

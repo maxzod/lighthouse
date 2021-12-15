@@ -1,0 +1,50 @@
+import 'package:lighthouse/queen_map/queen_map.dart';
+import 'package:args/command_runner.dart';
+
+import 'package:lighthouse/src/helpers/file.dart';
+import 'package:lighthouse/src/helpers/nations_assets.dart';
+import 'package:lighthouse/src/helpers/tr.dart';
+
+class TrValidateCommand extends Command {
+  @override
+  String get description => 'validates your assets';
+
+  @override
+  String get name => 'tr:validate';
+
+  @override
+  Future<void> run() async {
+    /// project assets directory
+    final jsonAssets = await loadDirectoryJsonFiles('./assets/lang/');
+
+    /// list of supported locales
+    final supportedLocales = findSupportedLocales(jsonAssets);
+
+    /// contains translations from each language from project assets directory
+    final fullAssets = <String, Map<String, Object?>>{};
+
+    final List<String> fullKeys = <String>[];
+
+    for (final locale in supportedLocales) {
+      /// contains translations from each language from project assets directory
+      final appAssets = await readJsonContent('./assets/lang/$locale.json');
+
+      /// load the translations from `nations_assets`
+      final nationsAssets = findAssetsFromNations(locale);
+
+      ///
+      fullAssets[locale] = mergeTwoMaps(nationsAssets, appAssets);
+      fullKeys.addAll(flatMapKeys(fullAssets[locale]!));
+    }
+
+    validateLocalizationAssets(
+      /// to red of duplicates
+      fullKeys.toSet().toList(),
+
+      /// full assets map with the locales
+      fullAssets,
+    );
+  }
+
+  /// end of the command
+}
