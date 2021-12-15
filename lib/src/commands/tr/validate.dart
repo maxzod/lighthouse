@@ -33,7 +33,9 @@ class TrValidateCommand extends Command {
       final nationsAssets = findAssetsFromNations(locale);
 
       ///
-      fullAssets[locale] = mergeTwoMaps(nationsAssets, appAssets);
+      fullAssets[locale] =
+          mergeTwoMaps(nationsAssets, appAssets) as Map<String, Object?>? ??
+              appAssets;
       fullKeys.addAll(flatMapKeys(fullAssets[locale]!));
     }
 

@@ -110,7 +110,8 @@ Future<List<ClassGetter>> buildClassGetters({
           isStatic: useStaticGetter,
           name: fileName,
           type: buildInterfaceName(child.path.pathCase.split('/').last),
-          whatToReturn: "${buildInterfaceName(child.path.pathCase.split('/').last)}()",
+          whatToReturn:
+              "${buildInterfaceName(child.path.pathCase.split('/').last)}()",
         ),
       );
     }

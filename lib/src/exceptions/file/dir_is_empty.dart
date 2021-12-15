@@ -1,10 +1,10 @@
-class DirIsEmpty implements Exception {
-  final String path;
+// class DirIsEmpty implements Exception {
+//   final String path;
 
-  DirIsEmpty(this.path);
+//   DirIsEmpty(this.path);
 
-  @override
-  String toString() {
-    return 'Directory $path is empty';
-  }
-}
+//   @override
+//   String toString() {
+//     return 'Directory $path is empty';
+//   }
+// }

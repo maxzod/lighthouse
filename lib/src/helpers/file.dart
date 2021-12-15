@@ -3,70 +3,77 @@ import 'dart:io';
 
 import 'package:lighthouse/src/exceptions/file/dir_does_not_contain_json.dart';
 import 'package:lighthouse/src/exceptions/file/dir_does_not_exist.dart';
-import 'package:lighthouse/src/exceptions/file/dir_is_empty.dart';
+import 'package:lighthouse/src/exceptions/file/file_does_not_exist.dart';
 import 'package:path/path.dart' as path;
 import 'package:path/path.dart';
 
-Future<List<FileSystemEntity>> loadDirectoryJsonFiles(String path) async {
+/// return list of the directory `json` files
+Future<Iterable<FileSystemEntity>> loadDirectoryJsonFiles(String path) async {
   final dirFiles = await loadDirectoryFiles(path);
-  if (dirFiles.isEmpty) throw DirIsEmpty(path);
   final jsonFiles = dirFiles.where((element) => element.path.endsWith('json'));
   if (jsonFiles.isEmpty) throw DirDoesNotContainJsonFiles(path);
-  return jsonFiles.toList();
+  return jsonFiles;
 }
 
-Future<List<FileSystemEntity>> loadDirectoryFiles(String path) async {
+/// list  directory files
+Future<Iterable<FileSystemEntity>> loadDirectoryFiles(String path) async {
   final dir = Directory(path);
-  final dirExist = await dir.exists();
-  if (!dirExist) throw DirDoesNotExist(path);
-  final dirFiles = dir.listSync();
-  if (dirFiles.isEmpty) throw DirIsEmpty(path);
-
+  if (!await dir.exists()) throw DirDoesNotExist(path);
   return dir.listSync();
 }
 
+/// return content of json file based on the path
 Future<Map<String, dynamic>> readJsonContent(String path) async {
-  final jString = await File(path).readAsString();
-  final jsonMap = json.decode(jString);
-  return jsonMap;
+  final file = File(path);
+  if (!await file.exists()) throw FileDoesNotExist(path);
+  final jString = await file.readAsString();
+  return json.decode(jString);
 }
 
-bool isParentDir(String parent, String child) {
+/// return true if the parent is enough for flutter to use the the child
+/// like when enter `foo/` and `foo/bar.png`  flutter can use `foo/bar.png`
+/// if `foo/` is in flutter assets in `pubspec.yaml`
+bool isEnoughToUseParent(String parent, String child) {
   final parentParts = parent.split('/')..removeWhere((e) => e.isEmpty);
   final childParts = child.split(path.separator)..removeWhere((e) => e.isEmpty);
   final childCount = childParts.length;
   final parentCount = parentParts.length;
-  // final parentReplaced = parent.replaceAll('\\', '/');
   final isTheSame = parent == child.replaceAll('\\', '/');
   return isTheSame ||
       ((parentCount + 1 == childCount) &&
           child.startsWith(parent.replaceAll('/', path.separator)));
 }
 
+/// return `true` if the path ends with `extension`
+/// cat till for sure if file without extension unless perform `io` logic
+/// and we don't need it for simplicity
 bool isFilePath(String path) {
   return path.split(separator).last.contains('.');
 }
 
 /// return the file name with the extension
-String findFileName(String path) => path.split(separator).last;
+/// ! throw `Exception` if the path does not contains a separator
+String findFileName(String path) {
+  if (path.contains(separator)) {
+    return path.split(separator).last;
+  } else {
+    throw Exception('path is not valid it does not contains separator');
+  }
+}
 
 /// return the file  extension
 /// foo.mp3 => mp3
-String findFileExtension(String path) => path.split('.').last;
+String findFileExtension(String path) {
+  if (path.contains('.')) {
+    return path.split('.').last;
+  } else {
+    throw Exception('path is not valid it does not contains .');
+  }
+}
 
 /// *  load the locale from json files
 /// * why null ? because the file might be corrupted some how or missing a comma in the end !
-Future<Map<String, dynamic>?> loadJsonFileContent(String path) async {
-  // try {
-  //   // *  parse it to string
-  //   return json.decode(
-  //     /// *  load content
-  //     await rootBundle.loadString(path),
-  //   ) as Map<String, dynamic>?;
-  // } catch (_) {
-  //   return null;
-  // }
-}
+Future<Map<String, dynamic>?> loadJsonFileContent(String path) async {}
 
 /// *  return supported locales based on files names
 List<String> findSupportedLocales(Iterable<FileSystemEntity> files) {

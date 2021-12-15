@@ -43,7 +43,9 @@ class TRMakeCommand extends Command {
 
       /// load the translations from `nations_assets`
       final nationsAssets = findAssetsFromNations(locale);
-      fullAssets[locale] = mergeTwoMaps(nationsAssets, appAssets);
+      fullAssets[locale] =
+          mergeTwoMaps(nationsAssets, appAssets) as Map<String, Object?>? ??
+              appAssets;
       fullKeys.addAll(flatMapKeys(fullAssets[locale]!));
     }
 

@@ -6,25 +6,20 @@ import 'package:lighthouse/src/commands/tr/validate.dart';
 import 'package:lighthouse/src/exceptions/tr_exception.dart';
 
 Future<void> main(List<String> args) async {
-  // await AssetsMakeCommand().run();
-  // return;
   try {
     final runner =
         CommandRunner('lh, lighthouse', ' ⚡ : CLI For Flutter Queen 👑 .');
 
-    /// * create new project with queen structure
-    // runner.addCommand(Init());
-
-    /// * generate TR class
+    // * Localization
+    // * generate TR class
     runner.addCommand(TRMakeCommand());
+    //  * validate localizations assets content
     runner.addCommand(TrValidateCommand());
 
-    /// * Assets
-    /// * generate assets
+    // * Assets
+    // * generate assets
     runner.addCommand(AssetsMakeCommand());
-
-    /// * add assets
-
+    // * add assets
     runner.addCommand(AssetsAddCommand());
 
     await runner.run(args);

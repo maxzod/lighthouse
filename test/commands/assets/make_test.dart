@@ -48,7 +48,6 @@ void main() {
     test('Must skip files that starts with dot', () async {
       await lh.main(['assets:make']);
       final content = assetsFile.readAsStringSync();
-      print(content);
       expect(
         content.contains('.hidden'),
         isFalse,
