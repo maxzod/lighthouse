@@ -21,8 +21,7 @@ dependencies:
 
 dev_dependencies:
   lints: ^1.0.1
-  flutter_test:
-    sdk: flutter
+  test: ^1.19.5
 
 executables:
   lh: lighthouse

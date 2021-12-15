@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:lighthouse/queen_map/queen_map.dart';
 
 void main() {

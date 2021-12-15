@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:lighthouse/src/exceptions/tr_exception.dart';
 
 void main() {

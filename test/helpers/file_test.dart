@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:lighthouse/src/exceptions/file/dir_does_not_contain_json.dart';
 import 'package:lighthouse/src/exceptions/file/dir_does_not_exist.dart';
 import 'package:lighthouse/src/helpers/file.dart';
