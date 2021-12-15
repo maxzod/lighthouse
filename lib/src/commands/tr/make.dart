@@ -7,7 +7,6 @@ import 'package:lighthouse/src/helpers/tr.dart';
 import 'package:recase/recase.dart';
 import 'package:args/command_runner.dart';
 
-import 'package:lighthouse/src/config.dart';
 import 'package:lighthouse/src/helpers/file.dart';
 import 'package:lighthouse/src/helpers/nations_assets.dart';
 import 'package:lighthouse/src/type_defs.dart';
@@ -55,12 +54,6 @@ class TRMakeCommand extends Command {
       fullAssets,
     );
 
-    /// `tr.dart` file builder'
-    final dfb = DartFileBuilder(
-      exports: [kNationsExport],
-      topComments: [kTopComment],
-    );
-
     /// root class builder
     final allDFB = convertMapToDartFile(
       fullAssets: fullAssets,
@@ -68,14 +61,9 @@ class TRMakeCommand extends Command {
       name: 'Tr',
       useStaticGetters: true,
     );
-    dfb.addClass(
-      /// root class
-      ClassBuilder(
-        name: 'Tr',
-        havePrivateConstructor: true,
-        getters: [],
-      ),
-    );
+
+    // allDFB.exports.add(kNationsExport);
+    // allDFB.topComments.add(kTopComment);
 
     /// generated files
     if (!Directory('./lib/generated').existsSync()) {
@@ -131,7 +119,6 @@ DartFileBuilder convertMapToDartFile({
       ));
     } else if (map[key] is Map) {
       final fileBuilder = convertMapToDartFile(
-        // name: key,
         name: buildFlatKey(key, newParents).camelCase,
         fullAssets: fullAssets,
         map: map[key] as Map<String, Object?>,
@@ -149,7 +136,46 @@ DartFileBuilder convertMapToDartFile({
   }
   final mapClass = ClassBuilder(
     name: name,
-    getters: getters,
+    getters: buildGetters(
+      fullAssets: fullAssets,
+      map: map,
+      parents: parents,
+      name: name,
+      useStaticGetters: useStaticGetters,
+    ),
+    // getters: getters,
   );
   return file..addClass(mapClass);
+}
+
+List<ClassGetter> buildGetters({
+  List<String> parents = const [],
+  required String name,
+  required Map<String, Object?> map,
+  bool useStaticGetters = false,
+  required FullAssets fullAssets,
+}) {
+  final getters = <ClassGetter>[];
+  for (final key in map.keys) {
+    final newParents = [...parents, key];
+
+    if (map[key] is String) {
+      getters.add(ClassGetter(
+        comments: buildKeyComments(buildFlatKey(key, newParents), fullAssets),
+        isStatic: useStaticGetters,
+        name: key == 'this' ? 'name' : key,
+        type: 'String',
+        whatToReturn: "'${buildFlatKey(key, newParents)}'",
+      ));
+    } else if (map[key] is Map) {
+      getters.add(ClassGetter(
+        comments: '/// * Nested 🕸',
+        isStatic: useStaticGetters,
+        name: key,
+        type: buildFlatKey(key, newParents).pascalCase,
+        whatToReturn: "${buildFlatKey(key, newParents).pascalCase}()",
+      ));
+    }
+  }
+  return getters;
 }

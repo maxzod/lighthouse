@@ -2,7 +2,6 @@ import 'package:lighthouse/queen_map/queen_map.dart';
 import 'package:args/command_runner.dart';
 
 import 'package:lighthouse/src/helpers/file.dart';
-import 'package:lighthouse/src/helpers/nations_assets.dart';
 import 'package:lighthouse/src/helpers/tr.dart';
 
 class TrValidateCommand extends Command {
@@ -27,15 +26,8 @@ class TrValidateCommand extends Command {
 
     for (final locale in supportedLocales) {
       /// contains translations from each language from project assets directory
-      final appAssets = await readJsonContent('./assets/lang/$locale.json');
+      fullAssets[locale] = await readJsonContent('./assets/lang/$locale.json');
 
-      /// load the translations from `nations_assets`
-      final nationsAssets = findAssetsFromNations(locale);
-
-      ///
-      fullAssets[locale] =
-          mergeTwoMaps(nationsAssets, appAssets) as Map<String, Object?>? ??
-              appAssets;
       fullKeys.addAll(flatMapKeys(fullAssets[locale]!));
     }
 

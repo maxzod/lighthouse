@@ -5,7 +5,10 @@
    "auth": {
       "gender": {
          "male": "aa",
-         "arg": "ss"
+         "arg": "ss",
+         "some_nested": {
+            "deep_nested": "enough"
+         }
       }
    }
 }

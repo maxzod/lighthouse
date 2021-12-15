@@ -1,18 +1,16 @@
 name: lighthouse
-description: queen CLI , support integration with queen packages system
-version: 0.0.5-beta.4
-homepage: https://github.com/maxzod/lighthouse
-repository: https://github.com/maxzod/lighthouse
-issue_tracker: https://github.com/maxzod/lighthouse/issues
+description: queen CLI , makes it easy to work with queen
+version: 0.0.6
+homepage: https://github.com/FlutterQueen/lighthouse
+repository: https://github.com/FlutterQueen/lighthouse
+issue_tracker: https://github.com/FlutterQueen/lighthouse/issues
 environment:
   sdk: ">=2.14.0 <3.0.0"
-
 dependencies:
   path: ^1.8.0
   equatable: ^2.0.3
   df_builder: ^0.0.4
   args: ^2.3.0
-  archive: ^3.1.6
   yaml: ^3.1.0
   recase: ^4.0.0
   nations_assets: 0.0.4
