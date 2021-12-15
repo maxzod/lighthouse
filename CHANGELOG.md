@@ -1,4 +1,4 @@
-## 0.0.5-beta.2
+## 0.0.5-beta.3
 
 - enhancements 🎁 ::
   - `lh assets:make`
