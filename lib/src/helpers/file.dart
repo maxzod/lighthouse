@@ -24,10 +24,14 @@ Future<Iterable<FileSystemEntity>> loadDirectoryFiles(String path) async {
 
 /// return content of json file based on the path
 Future<Map<String, dynamic>> readJsonContent(String path) async {
-  final file = File(path);
-  if (!await file.exists()) throw FileDoesNotExist(path);
-  final jString = await file.readAsString();
-  return json.decode(jString);
+  try {
+    final file = File(path);
+    if (!await file.exists()) throw FileDoesNotExist(path);
+    final jString = await file.readAsString();
+    return json.decode(jString);
+  } on FormatException {
+    throw '$path file is not valid json';
+  }
 }
 
 /// return true if the parent is enough for flutter to use the the child

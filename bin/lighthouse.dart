@@ -28,8 +28,8 @@ Future<void> main(List<String> args) async {
     await runner.run(args);
   } on TrException catch (e) {
     print('💡❌:: Can\'t Generate TR File !\n$e');
-  } catch (e, st) {
-    print(st);
+  } catch (e) {
+    // print(st);
     print(e.toString());
   }
 }

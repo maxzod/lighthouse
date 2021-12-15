@@ -1,6 +1,6 @@
 name: lighthouse
 description: queen CLI , makes it easy to work with queen
-version: 0.0.6
+version: 0.0.7
 homepage: https://github.com/FlutterQueen/lighthouse
 repository: https://github.com/FlutterQueen/lighthouse
 issue_tracker: https://github.com/FlutterQueen/lighthouse/issues

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:df_builder/df_builder.dart';
 import 'package:lighthouse/queen_map/queen_map.dart';
+import 'package:lighthouse/src/config.dart';
 import 'package:lighthouse/src/helpers/map.dart';
 import 'package:lighthouse/src/helpers/tr.dart';
 import 'package:recase/recase.dart';
@@ -62,9 +63,6 @@ class TRMakeCommand extends Command {
       useStaticGetters: true,
     );
 
-    // allDFB.exports.add(kNationsExport);
-    // allDFB.topComments.add(kTopComment);
-
     /// generated files
     if (!Directory('./lib/generated').existsSync()) {
       await Directory('./lib/generated').create();
@@ -74,7 +72,7 @@ class TRMakeCommand extends Command {
     // if there is old file , delete it
     if (await genFile.exists()) await genFile.delete();
 
-    await genFile.writeAsString(allDFB.toString());
+    await genFile.writeAsString('$kTopComment\n$kNationsExport\n$allDFB');
   }
   // end of the command
 
@@ -117,9 +115,9 @@ DartFileBuilder convertMapToDartFile({
         type: 'String',
         whatToReturn: "'${buildFlatKey(key, newParents)}'",
       ));
-    } else if (map[key] is Map) {
+    } else if (map[key] is Map<String, Object?>) {
       final fileBuilder = convertMapToDartFile(
-        name: buildFlatKey(key, newParents).camelCase,
+        name: buildFlatKey(key, newParents),
         fullAssets: fullAssets,
         map: map[key] as Map<String, Object?>,
         parents: newParents,

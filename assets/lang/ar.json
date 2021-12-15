@@ -3,12 +3,6 @@
       "aa": "aa"
    },
    "auth": {
-      "gender": {
-         "male": "aa",
-         "arg": "ss",
-         "some_nested": {
-            "deep_nested": "enough"
-         }
-      }
+      "sign_in": "azzz"
    }
 }
