@@ -85,3 +85,17 @@ List<String> findSupportedLocales(Iterable<FileSystemEntity> files) {
       .map((f) => f.path.split('/').last.replaceAll('.json', ''))
       .toList();
 }
+
+Future<List<File>> girDirectoryChildrenFlat(String root) async {
+  final files = <File>[];
+  final children = await loadDirectoryFiles(root);
+
+  for (final child in children) {
+    if (child is File) {
+      files.add(File(child.path));
+    } else {
+      files.addAll(await girDirectoryChildrenFlat(child.path));
+    }
+  }
+  return files;
+}

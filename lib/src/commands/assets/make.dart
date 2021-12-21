@@ -45,19 +45,19 @@ class AssetsMakeCommand extends Command {
       ),
     );
 
-    /// generated files
+    /// * generated files
     if (!Directory('./lib/generated').existsSync()) {
-      /// if the generated directory does not exist, create it
+      /// * if the generated directory does not exist, create it
       await Directory('./lib/generated').create();
     }
 
-    /// generate file
+    /// * generate file
     final genFile = File('./lib/generated/assets.dart');
 
-    /// if there is old assets folder delete it
+    /// * if there is old assets folder delete it
     if (await genFile.exists()) await genFile.delete();
 
-    /// creates new `assets.dart` file
+    /// * creates new `assets.dart` file
     await genFile.writeAsString(df.toString());
   }
 

@@ -8,6 +8,12 @@ Iterable<String> getYamlAssets() {
       [];
 }
 
+Iterable<MapEntry> getAppDependencies() {
+  final YamlMap? yaml =
+      loadYaml(File('./pubspec.yaml').readAsStringSync())['dependencies'];
+  return yaml?.entries ?? [];
+}
+
 YamlMap getPubspecYaml() {
   final yaml = loadYaml(File('./pubspec.yaml').readAsStringSync());
   return yaml as YamlMap;

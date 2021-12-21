@@ -1,6 +1,7 @@
 import 'package:args/command_runner.dart';
 import 'package:lighthouse/src/commands/assets/add.dart';
 import 'package:lighthouse/src/commands/assets/make.dart';
+import 'package:lighthouse/src/commands/pub/unused.dart';
 import 'package:lighthouse/src/commands/tr/make.dart';
 import 'package:lighthouse/src/commands/tr/validate.dart';
 import 'package:lighthouse/src/exceptions/tr_exception.dart';
@@ -21,6 +22,9 @@ Future<void> main(List<String> args) async {
       AssetsMakeCommand(),
       // add assets
       AssetsAddCommand(),
+
+      /// * pub
+      RemoveUnUsedPackagesCommand(),
     ];
 
     ///  * add commands to the runner
