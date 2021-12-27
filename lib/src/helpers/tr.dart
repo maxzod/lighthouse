@@ -1,6 +1,6 @@
-import 'package:lighthouse/queen_map/queen_map.dart';
+import 'package:flutter_readable/flutter_readable.dart';
 import 'package:lighthouse/src/exceptions/tr_exception.dart';
-import 'package:lighthouse/src/type_defs.dart';
+import 'package:lighthouse/src/types.dart';
 
 import 'locale.dart';
 

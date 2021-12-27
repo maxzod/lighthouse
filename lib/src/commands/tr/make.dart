@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:df_builder/df_builder.dart';
-import 'package:lighthouse/queen_map/queen_map.dart';
+import 'package:flutter_readable/flutter_readable.dart';
 import 'package:lighthouse/src/config.dart';
 import 'package:lighthouse/src/helpers/map.dart';
 import 'package:lighthouse/src/helpers/tr.dart';
@@ -10,7 +10,7 @@ import 'package:args/command_runner.dart';
 
 import 'package:lighthouse/src/helpers/file.dart';
 import 'package:lighthouse/src/helpers/nations_assets.dart';
-import 'package:lighthouse/src/type_defs.dart';
+import 'package:lighthouse/src/types.dart';
 
 const String kNationsExport = "export 'package:nations/nations.dart';";
 

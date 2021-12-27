@@ -1,6 +1,6 @@
 import 'package:lighthouse/src/exceptions/tr_exception.dart';
 
-import '../enums.dart';
+import '../types.dart';
 
 ValueType validateFelidType({
   required String key,

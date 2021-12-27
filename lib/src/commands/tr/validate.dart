@@ -1,5 +1,5 @@
-import 'package:lighthouse/queen_map/queen_map.dart';
 import 'package:args/command_runner.dart';
+import 'package:flutter_readable/flutter_readable.dart';
 
 import 'package:lighthouse/src/helpers/file.dart';
 import 'package:lighthouse/src/helpers/tr.dart';
