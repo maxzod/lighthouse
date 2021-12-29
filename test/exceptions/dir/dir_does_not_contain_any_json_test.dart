@@ -1,5 +1,5 @@
+import 'package:lighthouse/src/exceptions/file.dart';
 import 'package:test/test.dart';
-import 'package:lighthouse/src/exceptions/file/dir_does_not_contain_json.dart';
 
 void main() {
   test('it return the path in the message', () {

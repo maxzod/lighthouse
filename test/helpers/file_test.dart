@@ -1,10 +1,8 @@
 import 'dart:io';
 
-import 'package:lighthouse/src/exceptions/file/file_does_not_exist.dart';
+import 'package:lighthouse/src/exceptions/file.dart';
 import 'package:path/path.dart';
 import 'package:test/test.dart';
-import 'package:lighthouse/src/exceptions/file/dir_does_not_contain_json.dart';
-import 'package:lighthouse/src/exceptions/file/dir_does_not_exist.dart';
 import 'package:lighthouse/src/helpers/file.dart';
 
 void main() {

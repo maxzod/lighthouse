@@ -24,7 +24,7 @@ class AssetsMakeCommand extends Command {
   Future<void> run() async {
     /// load yaml assets from `pubspec.yaml`
     /// to make sure this asset is added in pubspec.yaml or not `#2`
-    _yamlAssets.addAll(getYamlAssets());
+    _yamlAssets.addAll(await getYamlAssets());
 
     /// assets.dart
     final df = DartFileBuilder(
@@ -40,16 +40,10 @@ class AssetsMakeCommand extends Command {
     /// root class `Asset`
     df.addClass(
       ClassBuilder(
-        name: 'Asset',
+        name: 'Assets',
         getters: rootGetters,
       ),
     );
-
-    /// * generated files
-    if (!Directory('./lib/generated').existsSync()) {
-      /// * if the generated directory does not exist, create it
-      await Directory('./lib/generated').create();
-    }
 
     /// * generate file
     final genFile = File('./lib/generated/assets.dart');

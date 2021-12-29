@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:lighthouse/src/exceptions/file/dir_does_not_contain_json.dart';
-import 'package:lighthouse/src/exceptions/file/dir_does_not_exist.dart';
-import 'package:lighthouse/src/exceptions/file/file_does_not_exist.dart';
+import 'package:lighthouse/src/exceptions/file.dart';
 import 'package:path/path.dart' as path;
 import 'package:path/path.dart';
 
@@ -22,13 +20,29 @@ Future<Iterable<FileSystemEntity>> loadDirectoryFiles(String path) async {
   return dir.listSync();
 }
 
+/// list  directory files
+Future<Iterable<FileSystemEntity>> loadAssetsFiles() async {
+  final dir = Directory('./assets');
+  if (!await dir.exists()) throw DirDoesNotExist('./assets');
+  return dir.listSync();
+}
+
 /// return content of json file based on the path
 Future<Map<String, dynamic>> readJsonContent(String path) async {
   try {
+    final jString = await readFileContent(path);
+    return json.decode(jString);
+  } on FormatException {
+    throw '$path file is not valid json';
+  }
+}
+
+/// return content of json file based on the path
+Future<String> readFileContent(String path) async {
+  try {
     final file = File(path);
     if (!await file.exists()) throw FileDoesNotExist(path);
-    final jString = await file.readAsString();
-    return json.decode(jString);
+    return file.readAsString();
   } on FormatException {
     throw '$path file is not valid json';
   }

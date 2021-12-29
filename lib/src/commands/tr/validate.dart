@@ -1,8 +1,8 @@
 import 'package:args/command_runner.dart';
-import 'package:flutter_readable/flutter_readable.dart';
+import 'package:lighthouse/src/helpers/locale.dart';
+import 'package:readable/readable.dart';
 
 import 'package:lighthouse/src/helpers/file.dart';
-import 'package:lighthouse/src/helpers/tr.dart';
 
 class TrValidateCommand extends Command {
   @override

@@ -14,6 +14,9 @@ class AssetsAddCommand extends Command {
   String get name => 'assets:add';
   @override
   Future<void> run() async {
+    /// find root assets `./assets` children
+    final items = await loadAssetsFiles();
+
     /// contains the assets directory children in flat list
     /// ```dart
     /// [
@@ -27,9 +30,6 @@ class AssetsAddCommand extends Command {
     ///]
     ///```
     final assetsDirChildren = <String>[];
-
-    /// find root assets `./assets` children
-    final items = await loadDirectoryFiles('./assets');
 
     /// extract the children content
     for (final fse in items) {

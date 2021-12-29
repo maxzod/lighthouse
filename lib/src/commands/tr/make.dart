@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:df_builder/df_builder.dart';
-import 'package:flutter_readable/flutter_readable.dart';
+import 'package:lighthouse/src/helpers/locale.dart';
+import 'package:readable/readable.dart';
 import 'package:lighthouse/src/config.dart';
 import 'package:lighthouse/src/helpers/map.dart';
-import 'package:lighthouse/src/helpers/tr.dart';
 import 'package:recase/recase.dart';
 import 'package:args/command_runner.dart';
 
