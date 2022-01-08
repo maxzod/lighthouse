@@ -2,16 +2,14 @@ import 'package:args/command_runner.dart';
 import 'package:lighthouse/src/commands/assets/add.dart';
 import 'package:lighthouse/src/commands/assets/make.dart';
 import 'package:lighthouse/src/commands/pub/unused.dart';
-import 'package:lighthouse/src/commands/tr/make.dart';
 import 'package:lighthouse/src/commands/tr/validate.dart';
-import 'package:test/scaffolding.dart';
 import 'package:test/test.dart';
 
 void main() {
   final allCommands = <Command>[
     // * Localization
     // generate `Tr` class
-    TRMakeCommand(),
+    // TRMakeCommand(),
     // validate localizations assets content
     TrValidateCommand(),
 

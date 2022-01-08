@@ -39,13 +39,9 @@ Future<Map<String, dynamic>> readJsonContent(String path) async {
 
 /// return content of json file based on the path
 Future<String> readFileContent(String path) async {
-  try {
-    final file = File(path);
-    if (!await file.exists()) throw FileDoesNotExist(path);
-    return file.readAsString();
-  } on FormatException {
-    throw '$path file is not valid json';
-  }
+  final file = File(path);
+  if (!await file.exists()) throw FileDoesNotExist(path);
+  return file.readAsString();
 }
 
 /// return true if the parent is enough for flutter to use the the child
