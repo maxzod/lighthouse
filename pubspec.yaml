@@ -16,16 +16,18 @@ dependencies:
   yaml_edit: ^2.0.1
   cli_dialog: ^0.5.0
   readable: ^0.0.2
+  get_it: ^7.2.0
+  meta: ^1.7.0
 
 dev_dependencies:
   lints: ^1.0.1
   test: ^1.19.5
-
+  mockito: ^5.0.17
+  build_runner: ^2.1.7
+  mocktail: ^0.2.0
 executables:
   lh: lighthouse
   lighthouse: lighthouse
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/
