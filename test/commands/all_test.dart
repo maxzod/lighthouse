@@ -1,5 +1,6 @@
 import 'package:lighthouse/src/commands/assets/add.dart';
-import 'package:lighthouse/src/managers.dart';
+import 'package:lighthouse/src/file_manager.dart';
+import 'package:lighthouse/src/pubspec_manager.dart';
 import 'package:lighthouse/src/mixins.dart';
 import 'package:test/test.dart';
 

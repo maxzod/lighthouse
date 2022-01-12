@@ -1,16 +1,5 @@
-import 'dart:io';
-
-import 'package:lighthouse/src/exceptions/file.dart';
 import 'package:path/path.dart' as path;
 import 'package:path/path.dart';
-
-/// return list of the directory `json` files
-Iterable<FileSystemEntity> loadDirectoryJsonFiles(String path) {
-  final dirFiles = loadDirectoryFiles(path);
-  final jsonFiles = dirFiles.where((element) => element.path.endsWith('json'));
-  if (jsonFiles.isEmpty) throw DirDoesNotContainJsonFiles(path);
-  return jsonFiles;
-}
 
 /// list  directory files
 // Future<Iterable<FileSystemEntity>> loadDirectoryFiles(String path) async {
@@ -18,12 +7,6 @@ Iterable<FileSystemEntity> loadDirectoryJsonFiles(String path) {
 //   if (!await dir.exists()) throw DirDoesNotExist(path);
 //   return dir.listSync();
 // }
-
-Iterable<FileSystemEntity> loadDirectoryFiles(String path) {
-  final dir = Directory(path);
-  if (!dir.existsSync()) throw DirDoesNotExist(path);
-  return dir.listSync();
-}
 
 // /// list  directory files
 // Future<Iterable<FileSystemEntity>> loadAssetsFiles() async {
@@ -62,11 +45,6 @@ bool isEnoughToUseParent(String parent, String child) {
       ((parentCount + 1 == childCount) &&
           child.startsWith(parent.replaceAll('/', path.separator)));
 }
-
-/// return `true` if the path ends with `extension`
-/// cat till for sure if file without extension unless perform `io` logic
-/// and we don't need it for simplicity
-bool isFilePath(String path) => path.split(separator).last.contains('.');
 
 /// return the file name with the extension
 /// ! throw `Exception` if the path does not contains a separator

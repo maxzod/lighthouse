@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:lighthouse/src/exceptions/file.dart';
+import 'package:lighthouse/src/file_manager.dart';
 import 'package:path/path.dart';
 import 'package:test/test.dart';
 import 'package:lighthouse/src/helpers/file.dart';
@@ -36,7 +37,8 @@ void main() {
       test(
         'should return a list of files',
         () async {
-          final files = loadDirectoryJsonFiles('./assets/lang');
+          final files =
+              FilesManager().loadDirectoryJsonFiles('test/assets/lang');
           expect(files, isNotEmpty);
         },
       );
@@ -44,7 +46,7 @@ void main() {
         'it throw exception if it does not exist',
         () async {
           expect(
-            () => loadDirectoryJsonFiles('/foo/bar'),
+            () => FilesManager().loadDirectoryJsonFiles('/foo/bar'),
             throwsA(isA<DirDoesNotExist>()),
           );
         },
@@ -53,7 +55,7 @@ void main() {
         'it throw exception if it does not have any json files',
         () async {
           expect(
-            () => loadDirectoryJsonFiles('testdir'),
+            () => FilesManager().loadDirectoryJsonFiles('testdir'),
             throwsA(isA<DirDoesNotContainJsonFiles>()),
           );
         },
@@ -67,7 +69,7 @@ void main() {
       test(
         'it can load directory files',
         () async {
-          final files = loadDirectoryFiles('testdir');
+          final files = FilesManager().loadDirectoryFiles('testdir');
           expect(files, isNotEmpty);
           expect(files.length, 2);
           expect(files.first.path, 'testdir\\test.ff');
@@ -78,7 +80,7 @@ void main() {
         'if path is not valid directory it throws DirDoesNotExist',
         () {
           expect(
-            () => loadDirectoryFiles('bad\\dir\\path'),
+            () => FilesManager().loadDirectoryFiles('bad\\dir\\path'),
             throwsA(isA<DirDoesNotExist>()),
           );
         },
@@ -152,14 +154,15 @@ void main() {
     () {
       test(
         'it return true if is file path',
-        () {
-          expect(isFilePath('assets/lang/en.json'), isTrue);
+        () async {
+          expect(await FilesManager().isFilePath('test/assets/lang/en.json'),
+              isTrue);
         },
       );
       test(
         'it return false if is not a file path',
-        () {
-          expect(isFilePath('assets/lang'), isFalse);
+        () async {
+          expect(await FilesManager().isFilePath('test/assets/lang'), isFalse);
         },
       );
     },
@@ -168,7 +171,7 @@ void main() {
     'findFileName',
     () {
       test('it extracts file name with extension', () {
-        expect(findFileName('assets${separator}lang${separator}en.json'),
+        expect(findFileName('test/assets${separator}lang${separator}en.json'),
             'en.json');
       });
       test(
@@ -185,7 +188,7 @@ void main() {
   group('findFileExtension', () {
     test('it extracts file extension', () {
       expect(
-        findFileExtension('assets${separator}lang${separator}en.json'),
+        findFileExtension('test/assets${separator}lang${separator}en.json'),
         'json',
       );
     });

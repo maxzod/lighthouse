@@ -30,4 +30,6 @@ executables:
   lighthouse: lighthouse
 
 flutter:
-  uses-material-design: true
+  assets:
+    - assets/foo.png
+    - assets/bar.png

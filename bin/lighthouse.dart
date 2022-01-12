@@ -1,7 +1,8 @@
 import 'package:args/command_runner.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lighthouse/lighthouse.dart';
-import 'package:lighthouse/src/managers.dart';
+import 'package:lighthouse/src/file_manager.dart';
+import 'package:lighthouse/src/pubspec_manager.dart';
 
 Future<void> main(List<String> args) async {
   final get = GetIt.instance;

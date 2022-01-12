@@ -1,8 +1,6 @@
-// import 'dart:io';
+import 'dart:io';
 
-// import 'package:yaml/yaml.dart';
-
-// import 'file.dart';
+import 'package:yaml/yaml.dart';
 
 // Future<Iterable<String>> getYamlAssets() async {
 //   /// `pubspec.yaml` content as a [String]
@@ -19,7 +17,7 @@
 //   return yaml?.entries ?? [];
 // }
 
-// YamlMap getPubspecYaml() {
-//   final yaml = loadYaml(File('./pubspec.yaml').readAsStringSync());
-//   return yaml as YamlMap;
-// }
+Future<YamlList> getPubspecAssetsYaml(
+  File file,
+) async =>
+    loadYaml((await file.readAsString()))['flutter']['assets'];

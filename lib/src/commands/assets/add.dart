@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:lighthouse/src/exceptions/lx.dart';
-import 'package:lighthouse/src/managers.dart';
+import 'package:lighthouse/src/pubspec_manager.dart';
 
+import '../../file_manager.dart';
 import '../../mixins.dart';
 
 class AssetsAddCommand extends LightHouseCommand {
@@ -25,15 +26,17 @@ class AssetsAddCommand extends LightHouseCommand {
   @override
   Future<void> run() async {
     /// find children from '/assets` directory
-    final assetsDirChildren = filesManager.dirChildren(Directory('assets'));
+    final assetsDirChildren =
+        await filesManager.findInnerContent(Directory('assets'));
 
     if (assetsDirChildren.isEmpty) throw NoAssetsException();
 
     /// remove unnecessary paths
-    final result = filesManager.removeUnNecessaryChildren(assetsDirChildren);
+    final result =
+        await filesManager.removeUnNecessaryChildren(assetsDirChildren);
 
     ///  write them to the `pubspec.yaml` `[flutter][assets]`
-    await yamlManager.setAssets(result);
+    await yamlManager.setAssets(result, File('pubspec.yaml'));
   }
 
   @override

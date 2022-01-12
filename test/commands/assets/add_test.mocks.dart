@@ -2,10 +2,11 @@
 // in lighthouse/test/commands/assets/add_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i4;
-import 'dart:io' as _i3;
+import 'dart:async' as _i3;
+import 'dart:io' as _i4;
 
-import 'package:lighthouse/src/managers.dart' as _i2;
+import 'package:lighthouse/src/file_manager.dart' as _i2;
+import 'package:lighthouse/src/pubspec_manager.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values
@@ -26,32 +27,30 @@ class MockFilesManager extends _i1.Mock implements _i2.FilesManager {
   }
 
   @override
-  List<String> findInnerContent(_i3.FileSystemEntity? fse) =>
+  _i3.Future<List<String>> findInnerContent(_i4.FileSystemEntity? fse) =>
       (super.noSuchMethod(Invocation.method(#findInnerContent, [fse]),
-          returnValue: <String>[]) as List<String>);
+              returnValue: Future<List<String>>.value(<String>[]))
+          as _i3.Future<List<String>>);
   @override
-  List<String> removeUnNecessaryChildren(List<String>? list) =>
+  _i3.Future<List<String>> removeUnNecessaryChildren(List<String>? list) =>
       (super.noSuchMethod(Invocation.method(#removeUnNecessaryChildren, [list]),
-          returnValue: <String>[]) as List<String>);
-  @override
-  List<String> dirChildren(_i3.Directory? directory) =>
-      (super.noSuchMethod(Invocation.method(#dirChildren, [directory]),
-          returnValue: <String>[]) as List<String>);
+              returnValue: Future<List<String>>.value(<String>[]))
+          as _i3.Future<List<String>>);
 }
 
 /// A class which mocks [PubSpecManager].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPubSpecManager extends _i1.Mock implements _i2.PubSpecManager {
+class MockPubSpecManager extends _i1.Mock implements _i5.PubSpecManager {
   MockPubSpecManager() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.Future<void> setAssets(Iterable<String>? assetsBefore) =>
-      (super.noSuchMethod(Invocation.method(#setAssets, [assetsBefore]),
+  _i3.Future<void> setAssets(Iterable<String>? assetsBefore, _i4.File? file) =>
+      (super.noSuchMethod(Invocation.method(#setAssets, [assetsBefore, file]),
           returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
+          returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
   @override
   Iterable<String> formatPaths(Iterable<String>? list) =>
       (super.noSuchMethod(Invocation.method(#formatPaths, [list]),

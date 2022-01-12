@@ -1,6 +1,7 @@
 import 'package:lighthouse/lighthouse.dart';
 import 'package:lighthouse/src/exceptions/lx.dart';
-import 'package:lighthouse/src/managers.dart';
+import 'package:lighthouse/src/file_manager.dart';
+import 'package:lighthouse/src/pubspec_manager.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -30,7 +31,7 @@ void main() {
   test('it throws if asset directory is empty', () async {
     final fManager = MockFilesManager();
 
-    when(fManager.dirChildren(any)).thenAnswer((_) => []);
+    when(fManager.findInnerContent(any)).thenAnswer((_) async => []);
     Object? exception;
     try {
       await AssetsAddCommand(
@@ -43,13 +44,16 @@ void main() {
     expect(exception, isA<NoAssetsException>());
   });
   test('it runs without errors', () async {
-    final fManager = MockFilesManager();
-    final pubspec = MockPubSpecManager();
-    when(fManager.dirChildren(any)).thenAnswer((_) => ['', '', '']);
+    final mockFManager = MockFilesManager();
+    final mockPubspec = MockPubSpecManager();
+    when(mockFManager.findInnerContent(any))
+        .thenAnswer((_) async => ['', '', '']);
+    when(mockFManager.removeUnNecessaryChildren(any))
+        .thenAnswer((_) async => []);
+    when(mockPubspec.setAssets(any, any)).thenAnswer((_) async {});
     await AssetsAddCommand(
-      filesManager: fManager,
-      yamlManager: pubspec,
+      filesManager: mockFManager,
+      yamlManager: mockPubspec,
     ).run();
-    expect(pubspec, isA<NoAssetsException>());
   });
 }
