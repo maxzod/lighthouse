@@ -142,8 +142,8 @@ void main() {
           final files = FilesManager().loadDirectoryFiles(Directory('testdir'));
           expect(files, isNotEmpty);
           expect(files.length, 2);
-          expect(files.first.path, 'testdir\\test.ff');
-          expect(files.last.path, 'testdir\\test2.ff');
+          expect(files.first.path, 'testdir${separator}test.ff');
+          expect(files.last.path, 'testdir${separator}test2.ff');
         },
       );
       test(
@@ -199,7 +199,7 @@ void main() {
         () async {
           expect(
               manager.isEnoughToUseParent(
-                  'assets/lang/', 'assets\\lang\\ar.json'),
+                  'assets/lang/', 'assets${separator}lang${separator}ar.json'),
               isTrue);
         },
       );
