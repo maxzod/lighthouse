@@ -62,13 +62,14 @@ class PubSpecManager {
     final content = await FilesManager().readFileContent(yamlFile);
     // convert to [YamlMap]
     final yaml = loadYaml(content) as YamlMap;
-    return (yaml['flutter']['assets'] as YamlList?)?.map((e) => e.toString()) ??
+    return (yaml['flutter']?['assets'] as YamlList?)
+            ?.map((e) => e.toString()) ??
         [];
   }
 
-  Iterable<MapEntry> getAppDependencies() {
-    final YamlMap? yaml =
-        loadYaml(File('pubspec.yaml').readAsStringSync())['dependencies'];
+  Iterable<MapEntry> getPubspecDependencies(File pubspec) {
+    final yaml =
+        loadYaml(pubspec.readAsStringSync())['dependencies'] as YamlMap?;
     return yaml?.entries ?? [];
   }
 

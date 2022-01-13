@@ -25,7 +25,7 @@ class TrValidateCommand extends LightHouseCommand {
   Future<void> run() async {
     /// project assets directory
     final jsonAssets =
-        filesManager.loadDirectoryJsonFiles(Directory('./assets/lang/'));
+        filesManager.loadDirectoryJsonFiles(Directory('assets/lang/'));
 
     /// list of supported locales
     final supportedLocales = filesManager.findSupportedLocales(jsonAssets);

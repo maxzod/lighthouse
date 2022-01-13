@@ -184,8 +184,14 @@ void main() {
         'should return true if it is the parent dir',
         () async {
           expect(
+            manager.isEnoughToUseParent('assets/lang/', 'assets/lang/ar.json'),
+            isTrue,
+          );
+          expect(
               manager.isEnoughToUseParent(
-                  'assets/lang/', 'assets${separator}lang${separator}ar.json'),
+                'assets/images/',
+                'assets/images/lighthouse.dart',
+              ),
               isTrue);
         },
       );

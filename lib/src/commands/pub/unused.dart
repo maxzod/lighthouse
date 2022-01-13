@@ -22,7 +22,8 @@ class RemoveUnUsedPackagesCommand extends LightHouseCommand {
 
   @override
   Future<void> run() async {
-    final usedPackagesList = pubSpecManager.getAppDependencies().toList();
+    final usedPackagesList =
+        pubSpecManager.getPubspecDependencies(File('pubspec.yaml')).toList();
 
     final projectFiles =
         await filesManager.girDirectoryChildrenFlat(Directory('lib'));
