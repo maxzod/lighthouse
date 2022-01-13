@@ -123,10 +123,13 @@ void main() {
               .map((f) =>
                   f.path.replaceAll('\\', '/').replaceAll('/', separator))
               .toList();
-          expect(paths, [
-            'test${separator}assets${separator}lang${separator}ar.json',
-            'test${separator}assets${separator}lang${separator}en.json',
-          ]);
+          expect(paths.length, 2);
+          expect(
+              paths,
+              containsAll([
+                'test${separator}assets${separator}lang${separator}ar.json',
+                'test${separator}assets${separator}lang${separator}en.json',
+              ]));
         },
       );
       test(
