@@ -115,7 +115,7 @@ DartFileBuilder convertMapToDartFile({
   bool useStaticGetters = false,
   required FullAssets fullAssets,
 }) {
-  final getters = <ClassGetter>[];
+  // final getters = <ClassGetter>[];
   final file = DartFileBuilder();
 
   for (final key in map.keys) {
