@@ -6,32 +6,8 @@ import 'package:path/path.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final dir = Directory('testdir');
-  final file = File('testdir/test.ff');
-  final file2 = File('testdir/test2.ff');
   final manager = FilesManager();
 
-  setUp(
-    () async {
-      if (!dir.existsSync()) {
-        await dir.create();
-        if (!file.existsSync()) {
-          await file.create();
-        }
-        if (!file2.existsSync()) {
-          await file2.create();
-        }
-      }
-    },
-  );
-
-  tearDown(
-    () async {
-      if (dir.existsSync()) {
-        await dir.delete(recursive: true);
-      }
-    },
-  );
   group('findInnerContent', () {
     // test('it return the file path alone if is not directory', ()async{
 
@@ -125,7 +101,8 @@ void main() {
         'it throw exception if it does not have any json files',
         () async {
           expect(
-            () => FilesManager().loadDirectoryJsonFiles(Directory('testdir')),
+            () => FilesManager()
+                .loadDirectoryJsonFiles(Directory('test/assets/images/foo')),
             throwsA(isA<DirDoesNotContainJsonFiles>()),
           );
         },
@@ -139,11 +116,17 @@ void main() {
       test(
         'it can load directory files',
         () async {
-          final files = FilesManager().loadDirectoryFiles(Directory('testdir'));
-          expect(files, isNotEmpty);
-          expect(files.length, 2);
-          expect(files.first.path, 'testdir${separator}test.ff');
-          expect(files.last.path, 'testdir${separator}test2.ff');
+          final files =
+              FilesManager().loadDirectoryFiles(Directory('test/assets/lang'));
+          // final paths = files.map((f) => f.path).toList();
+          final paths = files
+              .map((f) =>
+                  f.path.replaceAll('\\', '/').replaceAll('/', separator))
+              .toList();
+          expect(paths, [
+            'test${separator}assets${separator}lang${separator}ar.json',
+            'test${separator}assets${separator}lang${separator}en.json',
+          ]);
         },
       );
       test(
