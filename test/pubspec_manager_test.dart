@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:lighthouse/src/helpers/yaml.dart';
 import 'package:lighthouse/src/pubspec_manager.dart';
 import 'package:test/test.dart';
 
@@ -13,13 +12,26 @@ void main() {
   tearDownAll(() async {
     await fakeYaml.delete();
   });
+  group('getYamlAssets function', () {
+    test('it should return flutter.assets content from pubspec.yaml', () async {
+      final assets = await PubSpecManager()
+          .getYamlAssets(File('test/assets/pubspec.yaml'));
+      expect(assets.isNotEmpty, isTrue);
+      expect(
+          assets,
+          equals([
+            'assets/foo.png',
+            'assets/bar.png',
+          ]));
+    });
+  });
   group(
     'setAssets',
     () {
       test('it add assets to yaml', () async {
         final manger = PubSpecManager();
         await manger.setAssets(['path', 'path2'], fakeYaml);
-        final assetsList = await getPubspecAssetsYaml(fakeYaml);
+        final assetsList = await manger.getPubspecAssetsYaml(fakeYaml);
         expect(
           assetsList,
           ['path', 'path2'],

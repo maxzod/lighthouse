@@ -1,4 +1,5 @@
 import 'package:lighthouse/src/commands/assets/add.dart';
+import 'package:lighthouse/src/commands/pub/unused.dart';
 import 'package:lighthouse/src/file_manager.dart';
 import 'package:lighthouse/src/pubspec_manager.dart';
 import 'package:lighthouse/src/mixins.dart';
@@ -20,7 +21,10 @@ void main() {
         yamlManager: PubSpecManager(), filesManager: FilesManager()),
 
     /// * pub
-    // RemoveUnUsedPackagesCommand(),
+    RemoveUnUsedPackagesCommand(
+      filesManager: FilesManager(),
+      pubSpecManager: PubSpecManager(),
+    ),
   ];
 
   test('all commands names not empty', () {

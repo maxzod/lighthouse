@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:lighthouse/src/file_manager.dart';
+import 'package:yaml/yaml.dart';
+
 import 'package:yaml_edit/yaml_edit.dart';
 
 class PubSpecManager {
@@ -46,4 +49,29 @@ class PubSpecManager {
     }
     return result;
   }
+
+  // /// * returns true if this file in the yaml assets
+  // bool isInYamlAssets(String child, List<String> assets) {
+  //   return assets.where((p) => isEnoughToUseParent(p, child)).isNotEmpty;
+  // }
+
+  Future<Iterable<String>> getYamlAssets(File yamlFile) async {
+    /// `pubspec.yaml` content as a [String]
+    final content = await FilesManager().readFileContent(yamlFile);
+    // convert to [YamlMap]
+    final yaml = loadYaml(content) as YamlMap;
+    return (yaml['flutter']['assets'] as YamlList?)?.map((e) => e.toString()) ??
+        [];
+  }
+
+  Iterable<MapEntry> getAppDependencies() {
+    final YamlMap? yaml =
+        loadYaml(File('./pubspec.yaml').readAsStringSync())['dependencies'];
+    return yaml?.entries ?? [];
+  }
+
+  Future<YamlList> getPubspecAssetsYaml(
+    File file,
+  ) async =>
+      loadYaml((await file.readAsString()))['flutter']['assets'];
 }
