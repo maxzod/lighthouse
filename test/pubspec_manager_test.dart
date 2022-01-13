@@ -4,7 +4,7 @@ import 'package:lighthouse/src/pubspec_manager.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final fakeYaml = File('assets/pubspec.yaml');
+  final fakeYaml = File('test/assets/pubspec.yaml');
   setUp(() async {
     await fakeYaml.create(recursive: true);
     await fakeYaml.writeAsString(File('pubspec.yaml').readAsStringSync());

@@ -50,10 +50,12 @@ class PubSpecManager {
     return result;
   }
 
-  // /// * returns true if this file in the yaml assets
-  // bool isInYamlAssets(String child, List<String> assets) {
-  //   return assets.where((p) => isEnoughToUseParent(p, child)).isNotEmpty;
-  // }
+  /// * returns true if this file in the yaml assets
+  bool isInYamlAssets(String child, List<String> assets) {
+    return assets
+        .where((p) => FilesManager().isEnoughToUseParent(p, child))
+        .isNotEmpty;
+  }
 
   Future<Iterable<String>> getYamlAssets(File yamlFile) async {
     /// `pubspec.yaml` content as a [String]
@@ -66,7 +68,7 @@ class PubSpecManager {
 
   Iterable<MapEntry> getAppDependencies() {
     final YamlMap? yaml =
-        loadYaml(File('./pubspec.yaml').readAsStringSync())['dependencies'];
+        loadYaml(File('pubspec.yaml').readAsStringSync())['dependencies'];
     return yaml?.entries ?? [];
   }
 

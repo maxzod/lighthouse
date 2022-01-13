@@ -1,180 +1,193 @@
-// import 'dart:io';
+import 'dart:io';
 
-// import 'package:df_builder/df_builder.dart';
-// import 'package:lighthouse/src/commands/tr/fff.dart';
-// import 'package:lighthouse/src/helpers/locale.dart';
-// import 'package:readable/readable.dart' hide mergeTwoMaps;
-// import 'package:lighthouse/src/config.dart';
-// import 'package:lighthouse/src/helpers/map.dart';
-// import 'package:readable/readable.dart';
-// import 'package:recase/recase.dart';
-// import 'package:args/command_runner.dart';
+import 'package:df_builder/df_builder.dart';
+import 'package:lighthouse/src/helpers/locale.dart';
+import 'package:lighthouse/src/config.dart';
+import 'package:lighthouse/src/helpers/map.dart';
+import 'package:readable/readable.dart';
+import 'package:recase/recase.dart';
 
-// import 'package:lighthouse/src/helpers/file.dart';
-// import 'package:lighthouse/src/helpers/nations_assets.dart';
-// import 'package:lighthouse/src/types.dart';
+import 'package:lighthouse/src/helpers/nations_assets.dart';
+import 'package:lighthouse/src/types.dart';
 
-// const String kNationsExport = "export 'package:nations/nations.dart';";
+import '../../file_manager.dart';
+import '../../mixins.dart';
+import '../../pubspec_manager.dart';
 
-// class TRMakeCommand extends Command {
-//   /// command description
-//   @override
-//   String get description => 'Creates the generated translation files/assets 🌍';
+const String kNationsExport = "export 'package:nations/nations.dart';";
 
-//   /// command name
-//   @override
-//   String get name => 'tr:make';
+class TRMakeCommand extends LightHouseCommand {
+  final PubSpecManager yamlManager;
+  final FilesManager filesManager;
 
-//   /// called when a user invokes `lh tr:make`
-//   @override
-//   Future<void> run() async {
-//     /// project assets directory
-//     final jsonAssets = await loadDirectoryJsonFiles('./assets/lang/');
+  TRMakeCommand({
+    required this.yamlManager,
+    required this.filesManager,
+  });
 
-//     /// list of supported locales
-//     final supportedLocales = findSupportedLocales(jsonAssets);
+  /// command description
+  @override
+  String get description => 'Creates the generated translation files/assets 🌍';
 
-//     /// contains translations from each language from project assets directory
-//     final FullAssets fullAssets = {};
+  /// command name
+  @override
+  String get name => 'tr:make';
 
-//     final List<String> fullKeys = <String>[];
+  /// called when a user invokes `lh tr:make`
+  @override
+  Future<void> run() async {
+    /// project assets directory
+    final jsonAssets =
+        filesManager.loadDirectoryJsonFiles(Directory('./assets/lang/'));
 
-//     for (final locale in supportedLocales) {
-//       /// contains translations from each language from project assets directory
-//       final appAssets = await readJsonContent('./assets/lang/$locale.json');
+    /// list of supported locales
+    final supportedLocales = filesManager.findSupportedLocales(jsonAssets);
 
-//       /// load the translations from `nations_assets`
-//       final nationsAssets = findAssetsFromNations(locale);
+    /// contains translations from each language from project assets directory
+    final FullAssets fullAssets = {};
 
-//       fullAssets[locale] = mergeTwoMaps(nationsAssets, appAssets) ?? {};
-//       fullKeys.addAll(flatMapKeys(fullAssets[locale]!));
-//     }
+    final List<String> fullKeys = <String>[];
 
-//     validateLocalizationAssets(
-//       /// to rid of duplicate
-//       fullKeys.toSet().toList(),
-//       fullAssets,
-//     );
+    for (final locale in supportedLocales) {
+      /// contains translations from each language from project assets directory
+      final appAssets = await filesManager
+          .readJsonContent(File('./assets/lang/$locale.json'));
 
-//     /// root class builder
-//     final allDFB = convertMapToDartFile(
-//       fullAssets: fullAssets,
-//       map: fullAssets[fullAssets.keys.first]!,
-//       name: 'Tr',
-//       useStaticGetters: true,
-//     );
+      /// load the translations from `nations_assets`
+      final nationsAssets = findAssetsFromNations(locale);
 
-//     /// generated files
-//     if (!Directory('./lib/generated').existsSync()) {
-//       await Directory('./lib/generated').create();
-//     }
-//     final genFile = File('./lib/generated/tr.dart');
+      fullAssets[locale] = mergeTwoMaps(nationsAssets, appAssets) ?? {};
+      fullKeys.addAll(flatMapKeys(fullAssets[locale]!));
+    }
 
-//     // if there is old file , delete it
-//     if (await genFile.exists()) await genFile.delete();
+    validateLocalizationAssets(
+      /// to rid of duplicate
+      fullKeys.toSet().toList(),
+      fullAssets,
+    );
 
-//     await genFile.writeAsString('$kTopComment\n$kNationsExport\n$allDFB');
-//   }
-//   // end of the command
+    /// root class builder
+    final allDFB = convertMapToDartFile(
+      fullAssets: fullAssets,
+      map: fullAssets[fullAssets.keys.first]!,
+      name: 'Tr',
+      useStaticGetters: true,
+    );
 
-// }
+    /// generated files
+    if (!Directory('./lib/generated').existsSync()) {
+      await Directory('./lib/generated').create();
+    }
+    final genFile = File('./lib/generated/tr.dart');
 
-// /// converts the key to the interface name
-// String buildInterfaceName(String key) => '_${key.pascalCase}Interface';
+    // if there is old file , delete it
+    if (await genFile.exists()) await genFile.delete();
 
-// String buildKeyComments(
-//   String flatName,
-//   FullAssets fullAssets,
-// ) {
-//   final buffer = StringBuffer();
+    await genFile.writeAsString('$kTopComment\n$kNationsExport\n$allDFB');
+  }
 
-//   for (final lang in fullAssets.keys) {
-//     final value = findInMap(flatName, fullAssets[lang] ?? {});
-//     buffer.writeln('/// `$lang` => `$value`');
-//   }
-//   return buffer.toString().trim();
-// }
+  @override
+  String get successMessage => '🌍 Generated translation files/assets';
+  // end of the command
 
-// DartFileBuilder convertMapToDartFile({
-//   List<String> parents = const [],
-//   required String name,
-//   required Map<String, Object?> map,
-//   bool useStaticGetters = false,
-//   required FullAssets fullAssets,
-// }) {
-//   final getters = <ClassGetter>[];
-//   final file = DartFileBuilder();
+}
 
-//   for (final key in map.keys) {
-//     final newParents = [...parents, key];
+/// converts the key to the interface name
+String buildInterfaceName(String key) => '_${key.pascalCase}Interface';
 
-//     if (map[key] is String) {
-//       // getters.add(ClassGetter(
-//       //   comments: buildKeyComments(buildFlatKey(key, newParents), fullAssets),
-//       //   isStatic: useStaticGetters,
-//       //   name: key == 'this' ? 'name' : key,
-//       //   type: 'String',
-//       //   whatToReturn: "'${buildFlatKey(key, newParents)}'.tr",
-//       // ));
-//     } else if (map[key] is Map<String, Object?>) {
-//       final fileBuilder = convertMapToDartFile(
-//         name: buildFlatKey(key, newParents),
-//         fullAssets: fullAssets,
-//         map: map[key] as Map<String, Object?>,
-//         parents: newParents,
-//       );
-//       for (final newInterface in fileBuilder.classes) {
-//         file.addClass(newInterface);
-//       }
-//     } else {
-//       // this should never be called
-//       throw Exception('''
-//       unexpected type please open issue with you assets/lang folder 💙
-//       ''');
-//     }
-//   }
-//   final mapClass = ClassBuilder(
-//     name: name,
-//     getters: buildGetters(
-//       fullAssets: fullAssets,
-//       map: map,
-//       parents: parents,
-//       name: name,
-//       useStaticGetters: useStaticGetters,
-//     ),
-//     // getters: getters,
-//   );
-//   return file..addClass(mapClass);
-// }
+String buildKeyComments(
+  String flatName,
+  FullAssets fullAssets,
+) {
+  final buffer = StringBuffer();
 
-// List<ClassGetter> buildGetters({
-//   List<String> parents = const [],
-//   required String name,
-//   required Map<String, Object?> map,
-//   bool useStaticGetters = false,
-//   required FullAssets fullAssets,
-// }) {
-//   final getters = <ClassGetter>[];
-//   for (final key in map.keys) {
-//     final newParents = [...parents, key];
+  for (final lang in fullAssets.keys) {
+    final value = findInMap(flatName, fullAssets[lang] ?? {});
+    buffer.writeln('/// `$lang` => `$value`');
+  }
+  return buffer.toString().trim();
+}
 
-//     if (map[key] is String) {
-//       getters.add(ClassGetter(
-//         comments: buildKeyComments(buildFlatKey(key, newParents), fullAssets),
-//         isStatic: useStaticGetters,
-//         name: key == 'this' ? 'name' : key,
-//         type: 'String',
-//         whatToReturn: "'${buildFlatKey(key, newParents)}'.tr",
-//       ));
-//     } else if (map[key] is Map) {
-//       getters.add(ClassGetter(
-//         comments: '/// * Nested 🕸',
-//         isStatic: useStaticGetters,
-//         name: key,
-//         type: buildFlatKey(key, newParents).pascalCase,
-//         whatToReturn: "${buildFlatKey(key, newParents).pascalCase}()",
-//       ));
-//     }
-//   }
-//   return getters;
-// }
+DartFileBuilder convertMapToDartFile({
+  List<String> parents = const [],
+  required String name,
+  required Map<String, Object?> map,
+  bool useStaticGetters = false,
+  required FullAssets fullAssets,
+}) {
+  final getters = <ClassGetter>[];
+  final file = DartFileBuilder();
+
+  for (final key in map.keys) {
+    final newParents = [...parents, key];
+
+    if (map[key] is String) {
+      // getters.add(ClassGetter(
+      //   comments: buildKeyComments(buildFlatKey(key, newParents), fullAssets),
+      //   isStatic: useStaticGetters,
+      //   name: key == 'this' ? 'name' : key,
+      //   type: 'String',
+      //   whatToReturn: "'${buildFlatKey(key, newParents)}'.tr",
+      // ));
+    } else if (map[key] is Map<String, Object?>) {
+      final fileBuilder = convertMapToDartFile(
+        name: buildFlatKey(key, newParents),
+        fullAssets: fullAssets,
+        map: map[key] as Map<String, Object?>,
+        parents: newParents,
+      );
+      for (final newInterface in fileBuilder.classes) {
+        file.addClass(newInterface);
+      }
+    } else {
+      // this should never be called
+      throw Exception('''
+      unexpected type please open issue with you assets/lang folder 💙
+      ''');
+    }
+  }
+  final mapClass = ClassBuilder(
+    name: name,
+    getters: buildGetters(
+      fullAssets: fullAssets,
+      map: map,
+      parents: parents,
+      name: name,
+      useStaticGetters: useStaticGetters,
+    ),
+    // getters: getters,
+  );
+  return file..addClass(mapClass);
+}
+
+List<ClassGetter> buildGetters({
+  List<String> parents = const [],
+  required String name,
+  required Map<String, Object?> map,
+  bool useStaticGetters = false,
+  required FullAssets fullAssets,
+}) {
+  final getters = <ClassGetter>[];
+  for (final key in map.keys) {
+    final newParents = [...parents, key];
+
+    if (map[key] is String) {
+      getters.add(ClassGetter(
+        comments: buildKeyComments(buildFlatKey(key, newParents), fullAssets),
+        isStatic: useStaticGetters,
+        name: key == 'this' ? 'name' : key,
+        type: 'String',
+        whatToReturn: "'${buildFlatKey(key, newParents)}'.tr",
+      ));
+    } else if (map[key] is Map) {
+      getters.add(ClassGetter(
+        comments: '/// * Nested 🕸',
+        isStatic: useStaticGetters,
+        name: key,
+        type: buildFlatKey(key, newParents).pascalCase,
+        whatToReturn: "${buildFlatKey(key, newParents).pascalCase}()",
+      ));
+    }
+  }
+  return getters;
+}

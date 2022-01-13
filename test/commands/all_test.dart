@@ -1,5 +1,8 @@
 import 'package:lighthouse/src/commands/assets/add.dart';
+import 'package:lighthouse/src/commands/assets/make.dart';
 import 'package:lighthouse/src/commands/pub/unused.dart';
+import 'package:lighthouse/src/commands/tr/make.dart';
+import 'package:lighthouse/src/commands/tr/validate.dart';
 import 'package:lighthouse/src/file_manager.dart';
 import 'package:lighthouse/src/pubspec_manager.dart';
 import 'package:lighthouse/src/mixins.dart';
@@ -9,16 +12,27 @@ void main() {
   final allCommands = <LightHouseCommand>[
     // * Localization
     // generate `Tr` class
-    // TRMakeCommand(),
+    TRMakeCommand(
+      yamlManager: PubSpecManager(),
+      filesManager: FilesManager(),
+    ),
     // validate localizations assets content
-    // TrValidateCommand(),
+    TrValidateCommand(
+      yamlManager: PubSpecManager(),
+      filesManager: FilesManager(),
+    ),
 
     // * Assets
     // generate assets
-    // AssetsMakeCommand(),
+    AssetsMakeCommand(
+      yamlManager: PubSpecManager(),
+      filesManager: FilesManager(),
+    ),
     // add assets
     AssetsAddCommand(
-        yamlManager: PubSpecManager(), filesManager: FilesManager()),
+      yamlManager: PubSpecManager(),
+      filesManager: FilesManager(),
+    ),
 
     /// * pub
     RemoveUnUsedPackagesCommand(
