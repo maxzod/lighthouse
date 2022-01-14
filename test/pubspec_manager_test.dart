@@ -181,24 +181,28 @@ void main() {
       );
     });
     test('it return directory files', () async {
-      expect(
-        (await manager.girDirectoryChildrenFlat(Directory('test/assets/lang')))
-            .map((e) => e.path),
-        [
-          'test/assets/lang${separator}ar.json',
-          'test/assets/lang${separator}en.json',
-        ],
-      );
+      final data = (await manager
+              .girDirectoryChildrenFlat(Directory('test/assets/lang')))
+          .map((e) => e.path);
+
+      expect(data.length, 2);
+      expect(data.contains('test/assets/lang${separator}ar.json'), isTrue);
+      expect(data.contains('test/assets/lang${separator}en.json'), isTrue);
     });
     test('it loads the children too', () async {
+      final data = (await manager
+              .girDirectoryChildrenFlat(Directory('test/assets/audio')))
+          .map((e) => e.path);
+
+      expect(data.length, 2);
       expect(
-        (await manager.girDirectoryChildrenFlat(Directory('test/assets/audio')))
-            .map((e) => e.path),
-        [
-          'test/assets/audio${separator}music${separator}sound.mp3',
-          'test/assets/audio${separator}quran${separator}sound.mp3',
-        ],
-      );
+          data.contains(
+              'test/assets/audio${separator}music${separator}sound.mp3'),
+          isTrue);
+      expect(
+          data.contains(
+              'test/assets/audio${separator}quran${separator}sound.mp3'),
+          isTrue);
     });
   });
 }
