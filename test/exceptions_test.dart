@@ -72,4 +72,8 @@ void main() {
         BadKeyType(key: 'foo', language: 'ar', type: String).toString(),
         contains('foo')),
   );
+  test(
+    'IsNotDirPath toString() contains the path',
+    () => expect(IsNotDirPath('xxxx').toString(), contains('xxxx')),
+  );
 }

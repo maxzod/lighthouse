@@ -7,9 +7,14 @@ import 'package:path/path.dart';
 class FilesManager {
   /// give it a file system entity
   /// it will return a list that contains the paths to every single file in that `FileSystemEntity`
-  Future<List<String>> findInnerContent(Directory dir) async {
+  Future<List<String>> findInnerContent(FileSystemEntity dir) async {
+    // does not exist in readable
+    final fsExist = await dir.exists();
+    final isFile = await FileSystemEntity.isFile(dir.path);
+    if (!fsExist || isFile) return [];
+
     /// read the directory content
-    final children = loadDirectoryFiles(dir);
+    final children = loadDirectoryFiles(dir as Directory);
 
     /// to contains the children of this Directory
     final childrenPaths = <String>[];

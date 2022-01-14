@@ -9,14 +9,42 @@ void main() {
   final manager = FilesManager();
 
   group('findInnerContent', () {
-    // test('it return the file path alone if is not directory', ()async{
+    test('if dir does not exist throws exception', () async {
+      expect(await FilesManager().findInnerContent(Directory('foo-bar')), []);
+      expect(
+          await FilesManager().findInnerContent(
+            Directory(
+              'test${separator}assets${separator}lang${separator}ar.json',
+            ),
+          ),
+          []);
+    });
 
-    // final children = await FilesManager().findInnerContent();
-    // expect(children, [
-    //   'ISSUE_TEMPLATE/bug_report.md',
-    //   'ISSUE_TEMPLATE/feature_request.md',
-    //   'workflows/dart.yml',
-    // ]);
+    test('it return dir direct children', () async {
+      final files = await FilesManager().findInnerContent(
+          Directory('test${separator}assets${separator}lang'));
+
+      expect(files.length, 2);
+      expect(
+          files,
+          containsAll([
+            'test${separator}assets${separator}lang${separator}ar.json',
+            'test${separator}assets${separator}lang${separator}en.json',
+          ]));
+    });
+    test('it return inner dir if exists', () async {
+      final files = await FilesManager().findInnerContent(
+          Directory('test${separator}assets${separator}lvl1'));
+
+      expect(files.length, 3);
+      expect(
+          files,
+          containsAll([
+            'test${separator}assets${separator}lvl1${separator}child_file',
+            'test${separator}assets${separator}lvl1${separator}lvl2${separator}child_file',
+            'test${separator}assets${separator}lvl1${separator}lvl2${separator}lvl3${separator}child_file',
+          ]));
+    });
   });
 
   group(
