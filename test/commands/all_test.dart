@@ -3,8 +3,9 @@ import 'package:lighthouse/src/commands/assets/make.dart';
 import 'package:lighthouse/src/commands/pub/unused.dart';
 import 'package:lighthouse/src/commands/tr/make.dart';
 import 'package:lighthouse/src/commands/tr/validate.dart';
-import 'package:lighthouse/src/file_manager.dart';
-import 'package:lighthouse/src/pubspec_manager.dart';
+import 'package:lighthouse/src/managers/file_manager.dart';
+import 'package:lighthouse/src/managers/pubspec_manager.dart';
+import 'package:lighthouse/src/managers/recase.dart';
 import 'package:lighthouse/src/mixins.dart';
 import 'package:test/test.dart';
 
@@ -27,6 +28,7 @@ void main() {
     AssetsMakeCommand(
       yamlManager: PubSpecManager(),
       filesManager: FilesManager(),
+      recaseManager: RecaseManager(),
     ),
     // add assets
     AssetsAddCommand(

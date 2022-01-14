@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:lighthouse/src/exceptions/lx.dart';
-import 'package:lighthouse/src/pubspec_manager.dart';
+import 'package:lighthouse/src/managers/pubspec_manager.dart';
 
-import '../../file_manager.dart';
+import '../../managers/file_manager.dart';
 import '../../mixins.dart';
 
 class AssetsAddCommand extends LightHouseCommand {

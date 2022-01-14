@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:lighthouse/src/helpers/locale.dart';
 import 'package:readable/readable.dart';
 
-import '../../file_manager.dart';
+import '../../managers/file_manager.dart';
 import '../../mixins.dart';
-import '../../pubspec_manager.dart';
+import '../../managers/pubspec_manager.dart';
 
 class TrValidateCommand extends LightHouseCommand {
   final PubSpecManager yamlManager;

@@ -10,9 +10,9 @@ import 'package:recase/recase.dart';
 import 'package:lighthouse/src/helpers/nations_assets.dart';
 import 'package:lighthouse/src/types.dart';
 
-import '../../file_manager.dart';
+import '../../managers/file_manager.dart';
 import '../../mixins.dart';
-import '../../pubspec_manager.dart';
+import '../../managers/pubspec_manager.dart';
 
 const String kNationsExport = "export 'package:nations/nations.dart';";
 

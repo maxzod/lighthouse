@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:lighthouse/src/exceptions/tr_exception.dart';
-import 'package:lighthouse/src/file_manager.dart';
+import 'package:lighthouse/src/managers/file_manager.dart';
 import 'package:lighthouse/src/helpers/locale.dart';
 import 'package:lighthouse/src/helpers/nations_assets.dart';
 import 'package:test/test.dart';

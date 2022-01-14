@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:lighthouse/src/file_manager.dart';
-import 'package:lighthouse/src/pubspec_manager.dart';
+import 'package:lighthouse/src/managers/file_manager.dart';
+import 'package:lighthouse/src/managers/pubspec_manager.dart';
 import 'package:path/path.dart' hide equals;
 import 'package:test/test.dart';
 
@@ -10,7 +10,8 @@ void main() {
   final emptyDir = Directory('test/assets/empty');
   setUp(() async {
     await fakeYaml.create(recursive: true);
-    await fakeYaml.writeAsString(File('pubspec.yaml').readAsStringSync());
+    await fakeYaml.writeAsString(
+        File('test/assets/pubspec_fort_test.yaml').readAsStringSync());
     await emptyDir.create(recursive: true);
   });
   tearDownAll(() async {
@@ -31,7 +32,7 @@ void main() {
     });
     test('it return  empty list if there is not assets', () async {
       final assets = await PubSpecManager()
-          .getYamlAssets(File('test/assets/pubspec_fort_test.yaml'));
+          .getYamlAssets(File('test/assets/pubspec_without_assets.yaml'));
       expect(assets.isEmpty, isTrue);
       expect(assets, equals([]));
     });

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:lighthouse/src/exceptions/file.dart';
-import 'package:lighthouse/src/file_manager.dart';
+import 'package:lighthouse/src/managers/file_manager.dart';
 import 'package:path/path.dart';
 import 'package:test/test.dart';
 
@@ -291,12 +291,9 @@ void main() {
       );
     });
     test(
-      'it throws exception if the path does not contains any separators',
+      'it return empty string if the path does not contains .',
       () {
-        expect(
-          () => manager.findFileExtension('path-without-any-dots-png'),
-          throwsA(isA<Exception>()),
-        );
+        expect(manager.findFileExtension('path-without-any-dots-png'), '');
       },
     );
   });

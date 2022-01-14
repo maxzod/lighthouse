@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:cli_dialog/cli_dialog.dart';
-import 'package:lighthouse/src/file_manager.dart';
+import 'package:lighthouse/src/managers/file_manager.dart';
 import 'package:lighthouse/src/mixins.dart';
-import 'package:lighthouse/src/pubspec_manager.dart';
+import 'package:lighthouse/src/managers/pubspec_manager.dart';
 import 'package:yaml_edit/yaml_edit.dart';
 
 class RemoveUnUsedPackagesCommand extends LightHouseCommand {

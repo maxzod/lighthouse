@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:lighthouse/src/file_manager.dart';
+import 'package:lighthouse/src/managers/file_manager.dart';
 import 'package:yaml/yaml.dart';
 
 import 'package:yaml_edit/yaml_edit.dart';

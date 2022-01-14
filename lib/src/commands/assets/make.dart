@@ -1,23 +1,29 @@
 import 'dart:io';
 
 import 'package:df_builder/df_builder.dart';
+import 'package:lighthouse/src/managers/recase.dart';
 import 'package:lighthouse/src/mixins.dart';
 import 'package:recase/recase.dart';
 
 import '../../config.dart';
-import '../../file_manager.dart';
-import '../../pubspec_manager.dart';
-
-final _yamlAssets = <String>[];
+import '../../managers/file_manager.dart';
+import '../../managers/pubspec_manager.dart';
 
 class AssetsMakeCommand extends LightHouseCommand {
   final PubSpecManager yamlManager;
   final FilesManager filesManager;
+  final RecaseManager recaseManager;
 
   AssetsMakeCommand({
     required this.yamlManager,
     required this.filesManager,
+    required this.recaseManager,
   });
+  final _yamlAssets = <String>[];
+  String get outputPath => 'lib/generated/assets.dart';
+  String get pubspecPath => 'pubspec.yaml';
+  String get assetsPath => 'assets';
+  String get rootName => 'Assets';
 
   /// command description
   @override
@@ -32,7 +38,7 @@ class AssetsMakeCommand extends LightHouseCommand {
   Future<void> run() async {
     /// load yaml assets from `pubspec.yaml`
     /// to make sure this asset is added in pubspec.yaml or not `#2`
-    _yamlAssets.addAll(await yamlManager.getYamlAssets(File('pubspec.yaml')));
+    _yamlAssets.addAll(await yamlManager.getYamlAssets(File(pubspecPath)));
 
     /// assets.dart
     final df = DartFileBuilder(
@@ -43,21 +49,23 @@ class AssetsMakeCommand extends LightHouseCommand {
     final rootGetters = await buildClassGetters(
       dfBuilder: df,
       useStaticGetter: true,
+      path: assetsPath,
     );
 
     /// root class `Asset`
     df.addClass(
       ClassBuilder(
-        name: 'Assets',
+        name: rootName,
         getters: rootGetters,
       ),
     );
 
     /// * generate file
-    final genFile = File('./lib/generated/assets.dart');
+    final genFile = File(outputPath);
 
     /// * if there is old assets folder delete it
     if (await genFile.exists()) await genFile.delete();
+    genFile.createSync(recursive: true);
 
     /// * creates new `assets.dart` file
     await genFile.writeAsString(df.toString());
@@ -74,7 +82,7 @@ class AssetsMakeCommand extends LightHouseCommand {
     required DartFileBuilder dfBuilder,
 
     /// * path to start with (default is `./assets`)
-    String path = 'assets',
+    required String path,
 
     /// is this getters static (default is `false`)
     /// we need to use static getters to make sure the assets are accessible from the root class
@@ -88,12 +96,12 @@ class AssetsMakeCommand extends LightHouseCommand {
     final getters = <ClassGetter>[];
 
     for (final child in children) {
-      var fileName = findNameWithoutFormat(child.path);
+      var fileName = recaseManager.findNameWithoutFormat(child.path);
       if (fileName.isEmpty) continue;
 
       if (child is File) {
         getters.add(ClassGetter(
-          comments: await _findFSTypeComment(child.path),
+          comments: await findFSTypeComment(child.path, _yamlAssets),
           type: 'String',
           name: fileName,
           whatToReturn: '\'${child.path.replaceAll('\\', '/')}\'',
@@ -110,21 +118,19 @@ class AssetsMakeCommand extends LightHouseCommand {
         );
         getters.add(
           ClassGetter(
-            comments: await _findFSTypeComment(child.path),
+            comments: await findFSTypeComment(child.path, _yamlAssets),
             isStatic: useStaticGetter,
             name: fileName,
-            type: buildInterfaceName(child.path.pathCase.split('/').last),
+            type: recaseManager
+                .buildInterfaceName(child.path.pathCase.split('/').last),
             whatToReturn:
-                "${buildInterfaceName(child.path.pathCase.split('/').last)}()",
+                "${recaseManager.buildInterfaceName(child.path.pathCase.split('/').last)}()",
           ),
         );
       }
     }
     return getters;
   }
-
-  /// generate the interface name
-  String buildInterfaceName(String key) => '_${key.pascalCase}Interface';
 
   Future<ClassBuilder> buildInterface({
     required String path,
@@ -138,35 +144,34 @@ class AssetsMakeCommand extends LightHouseCommand {
 
     return ClassBuilder(
       havePrivateConstructor: false,
-      name: buildInterfaceName(path.pathCase.split('/').last),
+      name: recaseManager.buildInterfaceName(path.pathCase.split('/').last),
       getters: getters,
     );
   }
 
-  String findNameWithoutFormat(String path) {
-    final name = filesManager.findFileName(path).split('.').first;
-    return name.camelCase;
-  }
-
   /// return the comment based on the file
   /// adds a deprecated comment if the file is not in the yaml Assets
-  Future<String> _findFSTypeComment(String child) async {
+  Future<String> findFSTypeComment(
+    String path,
+    List<String> yamlAssets,
+  ) async {
     /// if is just a folder add this as comment
-    if (await filesManager.isDirPath(child)) return '/// * Directory';
+    if (await filesManager.isDirPath(path)) return '/// * Directory';
 
-    final fName = filesManager.findFileName(child);
+    final fName = filesManager.findFileName(path);
 
     /// *
-    final result = filesManager.findFileExtension(fName);
+    final extension = filesManager.findFileExtension(fName);
 
-    String fComment = '/// * $result';
+    String fComment = '/// `$extension`';
 
     /// * returns true if this file in the yaml assets
-    final isInAssets = yamlManager.isInYamlAssets(child, _yamlAssets);
+    final isInAssets = yamlManager.isInYamlAssets(path, yamlAssets);
 
+    /// to annotate it as deprecated
     return isInAssets
         ? fComment
-        : '''$fComment
-      @Deprecated('${child.replaceAll('\\', '/')} is not in your assets in pubspec.yaml')''';
+        : """$fComment
+@Deprecated('${path.replaceAll('\\', '/')} is not in your assets in pubspec.yaml')""";
   }
 }

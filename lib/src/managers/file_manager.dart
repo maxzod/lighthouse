@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'exceptions/file.dart';
+import '../exceptions/file.dart';
 import 'package:path/path.dart';
 
 class FilesManager {
@@ -134,11 +134,7 @@ class FilesManager {
   /// return the file  extension
   /// foo.mp3 => mp3
   String findFileExtension(String path) {
-    if (path.contains('.')) {
-      return path.split('.').last;
-    } else {
-      throw Exception('path is not valid it does not contains .');
-    }
+    return path.contains('.') ? path.split('.').last : '';
   }
 
 //

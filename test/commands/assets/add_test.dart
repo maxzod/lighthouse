@@ -1,7 +1,7 @@
 import 'package:lighthouse/lighthouse.dart';
 import 'package:lighthouse/src/exceptions/lx.dart';
-import 'package:lighthouse/src/file_manager.dart';
-import 'package:lighthouse/src/pubspec_manager.dart';
+import 'package:lighthouse/src/managers/file_manager.dart';
+import 'package:lighthouse/src/managers/pubspec_manager.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
