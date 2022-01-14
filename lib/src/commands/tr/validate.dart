@@ -1,59 +1,56 @@
-import 'dart:io';
+// import 'dart:io';
 
-import 'package:lighthouse/src/helpers/locale.dart';
-import 'package:readable/readable.dart';
+// import 'package:lighthouse/src/helpers/locale.dart';
+// import 'package:readable/readable.dart';
 
-import '../../managers/file_manager.dart';
-import '../../mixins.dart';
-import '../../managers/pubspec_manager.dart';
+// import '../../managers/file_manager.dart';
+// import '../../mixins.dart';
+// import '../../managers/pubspec_manager.dart';
 
-class TrValidateCommand extends LightHouseCommand {
-  final PubSpecManager yamlManager;
-  final FilesManager filesManager;
+// class TrValidateCommand extends LightHouseCommand {
+//   final PubSpecManager yamlManager;
+//   final FilesManager filesManager;
 
-  TrValidateCommand({
-    required this.yamlManager,
-    required this.filesManager,
-  });
-  @override
-  String get description => 'validates your assets';
+//   TrValidateCommand({
+//     required this.yamlManager,
+//     required this.filesManager,
+//   });
+//   @override
+//   String get description => 'validates your assets';
 
-  @override
-  String get name => 'tr:validate';
+//   @override
+//   String get name => 'tr:validate';
+//   @override
+//   String get successMessage => 'All translations are valid';
 
-  @override
-  Future<void> run() async {
-    /// project assets directory
-    final jsonAssets =
-        filesManager.loadDirectoryJsonFiles(Directory('assets/lang/'));
+//   @override
+//   Future<void> run() async {
+//     /// project assets directory
+//     final jsonAssets =
+//         filesManager.loadDirectoryJsonFiles(Directory('assets/lang/'));
 
-    /// list of supported locales
-    final supportedLocales = filesManager.findSupportedLocales(jsonAssets);
+//     /// list of supported locales
+//     final supportedLocales = filesManager.findSupportedLocales(jsonAssets);
 
-    /// contains translations from each language from project assets directory
-    final fullAssets = <String, Map<String, Object?>>{};
+//     /// contains translations from each language from project assets directory
+//     final fullAssets = <String, Map<String, Object?>>{};
 
-    final List<String> fullKeys = <String>[];
+//     final List<String> fullKeys = <String>[];
 
-    for (final locale in supportedLocales) {
-      /// contains translations from each language from project assets directory
-      fullAssets[locale] =
-          await filesManager.readJsonContent(File('assets/lang/$locale.json'));
+//     for (final locale in supportedLocales) {
+//       /// contains translations from each language from project assets directory
+//       fullAssets[locale] =
+//           await filesManager.readJsonContent(File('assets/lang/$locale.json'));
 
-      fullKeys.addAll(flatMapKeys(fullAssets[locale]!));
-    }
+//       fullKeys.addAll(flatMapKeys(fullAssets[locale]!));
+//     }
 
-    validateLocalizationAssets(
-      /// to red of duplicates
-      fullKeys.toSet().toList(),
+//     validateLocalizationAssets(
+//       /// to red of duplicates
+//       fullKeys.toSet().toList(),
 
-      /// full assets map with the locales
-      fullAssets,
-    );
-  }
-
-  @override
-  String get successMessage => 'All translations are valid';
-
-  /// end of the command
-}
+//       /// full assets map with the locales
+//       fullAssets,
+//     );
+//   }
+// }

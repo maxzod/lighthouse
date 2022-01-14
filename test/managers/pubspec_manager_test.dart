@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:lighthouse/src/exceptions/file.dart';
 import 'package:lighthouse/src/managers/file_manager.dart';
 import 'package:lighthouse/src/managers/pubspec_manager.dart';
 import 'package:path/path.dart' hide equals;
@@ -43,7 +44,7 @@ void main() {
       test('it add assets to yaml', () async {
         final manger = PubSpecManager();
         await manger.setAssets(['path', 'path2'], fakeYaml);
-        final assetsList = await manger.getPubspecAssetsYaml(fakeYaml);
+        final assetsList = await manger.getYamlAssets(fakeYaml);
         expect(
           assetsList,
           ['path', 'path2'],
@@ -164,7 +165,6 @@ void main() {
             'recase',
             'nations_assets',
             'yaml_edit',
-            'cli_dialog',
             'readable',
             'get_it',
             'meta',
@@ -204,6 +204,72 @@ void main() {
           data.contains(
               'test/assets/audio${separator}quran${separator}sound.mp3'),
           isTrue);
+    });
+  });
+
+  group('findUsedPackages', () {
+    test('it return empty list if there is no unused packages', () async {
+      final data = await PubSpecManager().findUsedPackages(
+        File('test/assets/pubspec_fort_test.yaml'),
+      );
+      expect(
+        data,
+        containsAll(
+          [
+            'path',
+            'df_builder',
+            'args',
+            'yaml',
+            'recase',
+            'nations_assets',
+            'yaml_edit',
+            'readable',
+            'get_it',
+            'meta',
+          ],
+        ),
+      );
+    });
+  });
+  group('findUnUsedPackages', () {
+    test('it return empty list if there is no unused packages', () async {
+      final data = await PubSpecManager().findUnUsedPackages(
+        File('test/assets/no_deps.yaml'),
+        Directory('test/assets/lib'),
+      );
+      expect(data.isEmpty, isTrue);
+    });
+    test('it return empty list if there is no unused packages', () async {
+      final data = await PubSpecManager().findUnUsedPackages(
+        File('test/assets/pubspec_fort_test.yaml'),
+        Directory('test/assets/lib'),
+      );
+      expect(data.length, 4);
+      expect(
+        data,
+        containsAll(['nations_assets', 'readable', 'get_it', 'meta']),
+      );
+    });
+  });
+
+  group('removeDependencies', () {
+    test('it throws if file does not exist', () {
+      expect(
+        () => PubSpecManager().removeDependencies(File('test/-foo-bar'), []),
+        throwsA(isA<FileDoesNotExist>()),
+      );
+    });
+    test('it removes dependencies', () async {
+      await PubSpecManager().removeDependencies(
+        fakeYaml,
+        ['path', 'df_builder', 'args', 'yaml', 'recase'],
+      );
+      final afterDependencies =
+          await PubSpecManager().findUsedPackages(fakeYaml);
+      expect(afterDependencies.length, 5);
+      for (final package in ['path', 'df_builder', 'args', 'yaml', 'recase']) {
+        expect(afterDependencies.contains(package), isFalse);
+      }
     });
   });
 }

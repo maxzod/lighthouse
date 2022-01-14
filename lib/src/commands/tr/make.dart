@@ -92,9 +92,6 @@ class TRMakeCommand extends LightHouseCommand {
 
 }
 
-/// converts the key to the interface name
-String buildInterfaceName(String key) => '_${key.pascalCase}Interface';
-
 String buildKeyComments(
   String flatName,
   FullAssets fullAssets,
@@ -122,13 +119,6 @@ DartFileBuilder convertMapToDartFile({
     final newParents = [...parents, key];
 
     if (map[key] is String) {
-      // getters.add(ClassGetter(
-      //   comments: buildKeyComments(buildFlatKey(key, newParents), fullAssets),
-      //   isStatic: useStaticGetters,
-      //   name: key == 'this' ? 'name' : key,
-      //   type: 'String',
-      //   whatToReturn: "'${buildFlatKey(key, newParents)}'.tr",
-      // ));
     } else if (map[key] is Map<String, Object?>) {
       final fileBuilder = convertMapToDartFile(
         name: buildFlatKey(key, newParents),

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:lighthouse/src/exceptions/file.dart';
 import 'package:lighthouse/src/managers/file_manager.dart';
 import 'package:yaml/yaml.dart';
 
@@ -67,14 +68,54 @@ class PubSpecManager {
         [];
   }
 
-  Iterable<MapEntry> getPubspecDependencies(File pubspec) {
-    final yaml =
-        loadYaml(pubspec.readAsStringSync())['dependencies'] as YamlMap?;
+  Iterable<MapEntry> getPubspecDependencies(
+    File file,
+  ) {
+    final yaml = loadYaml(file.readAsStringSync())?['dependencies'] as YamlMap?;
     return yaml?.entries ?? [];
   }
 
-  Future<YamlList> getPubspecAssetsYaml(
-    File file,
-  ) async =>
-      loadYaml((await file.readAsString()))['flutter']['assets'];
+  Future<List<String>> findUsedPackages(File pubspec) async {
+    final usedPackages = getPubspecDependencies(pubspec).toList();
+    if (usedPackages.isEmpty) return [];
+    return usedPackages.map((e) => e.key as String).toList();
+  }
+
+  Future<List<String>> findUnUsedPackages(File pubspec, Directory dir) async {
+    final usedPackages = await findUsedPackages(pubspec);
+
+    final projectFiles = await FilesManager().girDirectoryChildrenFlat(dir);
+    for (final projectFile in projectFiles) {
+      final fileContent = await projectFile.readAsString();
+      final toRemove = <String>[];
+      for (final package in usedPackages) {
+        if (fileContent.contains('package:$package/')) {
+          toRemove.add(package);
+        }
+      }
+      usedPackages.removeWhere((element) => toRemove.contains(element));
+    }
+    return usedPackages.map((element) => element).toList();
+  }
+
+  Future<void> removeDependencies(
+    File pubspec,
+    List<String> packages,
+  ) async {
+    if (!(await pubspec.exists())) throw FileDoesNotExist(pubspec.path);
+    // update pubspec.yaml
+    /// read the content of `pubspec.yaml` file
+    final pubspecContent = await pubspec.readAsString();
+
+    /// create editor to edit the `[flutter][assets]` tag
+    final doc = YamlEditor(pubspecContent);
+    for (final package in packages) {
+      doc.remove(['dependencies', package]);
+    }
+
+    /// this line will delete the old content
+
+    /// save the pubspec.yaml file
+    await pubspec.writeAsString(doc.toString());
+  }
 }

@@ -2,7 +2,6 @@ import 'package:lighthouse/src/commands/assets/add.dart';
 import 'package:lighthouse/src/commands/assets/make.dart';
 import 'package:lighthouse/src/commands/pub/unused.dart';
 import 'package:lighthouse/src/commands/tr/make.dart';
-import 'package:lighthouse/src/commands/tr/validate.dart';
 import 'package:lighthouse/src/managers/file_manager.dart';
 import 'package:lighthouse/src/managers/pubspec_manager.dart';
 import 'package:lighthouse/src/managers/recase.dart';
@@ -18,10 +17,10 @@ void main() {
       filesManager: FilesManager(),
     ),
     // validate localizations assets content
-    TrValidateCommand(
-      yamlManager: PubSpecManager(),
-      filesManager: FilesManager(),
-    ),
+    // TrValidateCommand(
+    //   yamlManager: PubSpecManager(),
+    //   filesManager: FilesManager(),
+    // ),
 
     // * Assets
     // generate assets
