@@ -3,7 +3,7 @@
 <a href="https://pub.dev/packages/lighthouse"><img src="https://img.shields.io/pub/v/lighthouse.svg" alt="Pub"></a>
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="License: MIT"></a>
 [![style: lint](https://img.shields.io/badge/style-lint-4BC0F5.svg)](https://pub.dev/packages/lint)
-
+[![codecov](https://codecov.io/gh/FlutterQueen/lighthouse/branch/master/graph/badge.svg?token=H5FF2M3HHH)](https://codecov.io/gh/FlutterQueen/lighthouse)
 # **`PART OF QUEEN FRAMEWORK 👑`**
 
 # Queen CLI
